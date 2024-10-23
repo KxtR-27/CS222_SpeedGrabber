@@ -7,9 +7,10 @@ public record Run(
         String selfLink,
         String id,
 
-        int place,
-        String date_submitted,
-        int realtime_length,
+        String gameLink,
+        String categoryLink,
+        List<String> playerLinks,
 
-        List<String> playerLinks
+        String date_submitted,
+        String primaryTime
 ) {}

@@ -4,12 +4,13 @@ import org.apache.commons.io.IOUtils;
 import speedgrabber.records.Category;
 import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
+import speedgrabber.records.Run;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.*;
 
 public class ApiDataGrabber {
     private static String fetchJson(String url) throws IOException {
@@ -27,10 +28,16 @@ public class ApiDataGrabber {
 
         return JsonReader.create(fetchJson(gameLink)).createGameData();
     }
+
     public static List<Category> getCategories(Game game) throws IOException {
         return JsonReader.create(fetchJson(game.linkToCategories())).createCategoryList();
     }
-    public static Leaderboard getLeaderboard(Category category) throws IOException {
-        return JsonReader.create(fetchJson(category.linkToLeaderboard())).createLeaderboard(20);
+
+    public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
+        return JsonReader.create(fetchJson(category.linkToLeaderboard())).createLeaderboard(maxRuns);
+    }
+    public static Run getRun(String id) throws IOException {
+        String runLink = String.format("https://www.speedrun.com/api/v1/runs/%s", id);
+        return JsonReader.create(fetchJson(runLink)).createRun();
     }
 }

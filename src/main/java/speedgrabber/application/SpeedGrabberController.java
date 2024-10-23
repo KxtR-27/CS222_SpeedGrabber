@@ -6,13 +6,15 @@ import speedgrabber.ApiDataGrabber;
 import speedgrabber.records.Category;
 import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
+import speedgrabber.records.Run;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+@SuppressWarnings({"unused"})
 public class SpeedGrabberController {
 
-    private Game game;
     @FXML
     private Label gameLabel;
     @FXML
@@ -20,30 +22,40 @@ public class SpeedGrabberController {
     @FXML
     private Button gameSearchButton;
 
-    private List<Category> categories;
     @FXML
     private ChoiceBox categoryDropdown;
 
-    private Leaderboard leaderboard;
     @FXML
     private TextArea leaderboardArea;
 
     public void searchGame() throws IOException {
-        game = ApiDataGrabber.getGame(gameSearchField.getText());
+        categoryDropdown.getItems().clear();
+
+        leaderboardArea.setText("");
+        gameSearchField.setDisable(true);
+
+        Game game = ApiDataGrabber.getGame(gameSearchField.getText());
         gameLabel.setText(String.format("Game found: %s", game.name()));
 
-        categories = ApiDataGrabber.getCategories(game);
+        List<Category> categories = ApiDataGrabber.getCategories(game);
         for (Category category : categories)
+            //noinspection unchecked
             categoryDropdown.getItems().add(category);
+
+        gameSearchField.setText("");
+        gameSearchField.setDisable(false);
     }
     public void showCategoryLeaderboard() throws IOException {
         if (categoryDropdown.getValue().equals(""))
             return;
 
-        leaderboard = ApiDataGrabber.getLeaderboard((Category) categoryDropdown.getValue());
+        Leaderboard leaderboard = ApiDataGrabber.getLeaderboard((Category) categoryDropdown.getValue(), 20);
         StringBuilder leaderboardBuilder = new StringBuilder();
-        for (String runID : leaderboard.runIDs())
-            leaderboardBuilder.append(String.format("%s%n", runID));
+        for (Map.Entry<Integer, Run> entry : leaderboard.runs().entrySet())
+            leaderboardBuilder.append(String.format(
+                    "%d.\t%s%n",
+                    entry.getKey(),
+                    entry.getValue()));
 
         leaderboardArea.setText(leaderboardBuilder.toString());
     }

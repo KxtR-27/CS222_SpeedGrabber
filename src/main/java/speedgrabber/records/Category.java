@@ -6,7 +6,8 @@ public record Category(
         String id,
         String name,
 
-        String linkToLeaderboard
+        String linkToLeaderboard,
+        String linkToGame
 ) {
     @Override
     public String toString() {

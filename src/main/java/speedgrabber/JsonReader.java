@@ -7,7 +7,9 @@ import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
 import speedgrabber.records.Run;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class JsonReader {
@@ -26,8 +28,12 @@ public class JsonReader {
     private List<String> indefiniteScan(String key) {
         return JsonPath.read(JSON, String.format("$..%s", key));
     }
+
     private int scanLength(String key) {
         return JsonPath.read(JSON, String.format("$..%s.length()", key));
+    }
+    private int scanInt(String key) {
+        return JsonPath.read(JSON, String.format("$.%s", key));
     }
 
     public Game createGameData() {
@@ -53,25 +59,45 @@ public class JsonReader {
                         definiteScan(String.format("data[%d].id", i)),
                         definiteScan(String.format("data[%d].name", i)),
 
-                        definiteScan(String.format("data[%d].links[5].uri", i))
+                        definiteScan(String.format("data[%d].links[5].uri", i)),
+                        definiteScan(String.format("data[%d].links[1].uri", i))
                 ));
         }
 
         return toReturn;
     }
 
-    public Leaderboard createLeaderboard(int maxRuns) {
+    public Leaderboard createLeaderboard(int maxRuns) throws IOException {
         String webLink = definiteScan("data.weblink");
-        String gameID = definiteScan("data.game");
-        String categoryID = definiteScan("data.category");
+
+        String gameLink = definiteScan("data.links[0].uri");
+        String categoryLink = definiteScan("data.links[1].uri");
 
         String timing = definiteScan("data.timing");
+        LinkedHashMap<Integer, Run> runs = new LinkedHashMap<>();
 
-        List<String> runIDs = new ArrayList<>(maxRuns);
         for (int i = 0; i < maxRuns && i < scanLength("data.runs"); i++) {
-            runIDs.add(definiteScan(String.format("data.runs[%d].run.id", i)));
+            runs.put(
+                    scanInt(String.format("data.runs[%d].place", i)),
+                    ApiDataGrabber.getRun(definiteScan(String.format("data.runs[%d].run.id", i)))
+            );
         }
 
-        return new Leaderboard(webLink, gameID, categoryID, timing, runIDs);
+        return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
+    }
+
+    public Run createRun() {
+        return new Run(
+                definiteScan("data.weblink"),
+                definiteScan("data.links[0].uri"),
+                definiteScan("data.id"),
+
+                definiteScan("data.links[1].uri"),
+                definiteScan("data.links[2].uri"),
+                indefiniteScan("players[*].uri"),
+
+                definiteScan("data.submitted"),
+                definiteScan("data.times.primary")
+        );
     }
 }
