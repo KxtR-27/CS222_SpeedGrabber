@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class MainCLI {
-    public static Scanner consoleScanner = new Scanner(System.in);
+    public static final Scanner consoleScanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
         System.out.printf("%nPlease enter a game abbreviation or ID. (Ex. 'sms' or 'v1pxjz68')%n>> ");

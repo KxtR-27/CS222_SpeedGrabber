@@ -2,12 +2,15 @@ package speedgrabber;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.io.IOUtils;
 import speedgrabber.records.Category;
 import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
 import speedgrabber.records.Run;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +28,11 @@ public class JsonReader {
     private String definiteScan(String keyPath) {
         return JsonPath.read(JSON, String.format("$.%s", keyPath));
     }
+
+    // This method is designed to be generic.
+    // In the future, it will have more uses.
+    // Then, the "SameParameterValue" warning will cease to exist.
+    @SuppressWarnings("SameParameterValue")
     private List<String> indefiniteScan(String key) {
         return JsonPath.read(JSON, String.format("$..%s", key));
     }
@@ -96,5 +104,21 @@ public class JsonReader {
                 definiteScan("data.submitted"),
                 definiteScan("data.times.primary")
         );
+    }
+
+    public Leaderboard test_createLeaderboard() throws IOException {
+        String webLink = definiteScan("data.weblink");
+
+        String gameLink = definiteScan("data.links[0].uri");
+        String categoryLink = definiteScan("data.links[1].uri");
+
+        String timing = definiteScan("data.timing");
+        LinkedHashMap<Integer, Run> runs = new LinkedHashMap<>();
+
+        runs.put(1, JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/records/sms-anypercent-run1.json"), StandardCharsets.UTF_8)).createRun());
+        runs.put(2, JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/records/sms-anypercent-run2.json"), StandardCharsets.UTF_8)).createRun());
+        runs.put(3, JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/records/sms-anypercent-run3.json"), StandardCharsets.UTF_8)).createRun());
+
+        return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
     }
 }

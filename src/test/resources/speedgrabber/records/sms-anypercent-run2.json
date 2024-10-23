@@ -1,0 +1,78 @@
+{
+  "data": {
+    "id": "megl1l9y",
+    "weblink": "https://www.speedrun.com/sms/run/megl1l9y",
+    "game": "v1pxjz68",
+    "level": null,
+    "category": "n2y3r8do",
+    "videos": {
+      "links": [
+        {
+          "uri": "https://www.youtube.com/watch?v=KkrKY0wwZRQ"
+        }
+      ]
+    },
+    "comment": null,
+    "status": {
+      "status": "verified",
+      "examiner": "o86d5k0j",
+      "verify-date": "2024-09-17T03:03:40Z"
+    },
+    "players": [
+      {
+        "rel": "user",
+        "id": "dx3ml28l",
+        "uri": "https://www.speedrun.com/api/v1/users/dx3ml28l"
+      }
+    ],
+    "date": "2024-09-16",
+    "submitted": "2024-09-17T02:51:23Z",
+    "times": {
+      "primary": "PT23M57S",
+      "primary_t": 1437,
+      "realtime": "PT23M57S",
+      "realtime_t": 1437,
+      "realtime_noloads": null,
+      "realtime_noloads_t": 0,
+      "ingame": null,
+      "ingame_t": 0
+    },
+    "system": {
+      "platform": "v06dk3e4",
+      "emulated": false,
+      "region": "o316x197"
+    },
+    "splits": null,
+    "values": {
+      "2lggwk6l": "21gok6xq",
+      "j845md4n": "gq7on0vl",
+      "ylqxgz78": "qzn57z8q"
+    },
+    "links": [
+      {
+        "rel": "self",
+        "uri": "https://www.speedrun.com/api/v1/runs/megl1l9y"
+      },
+      {
+        "rel": "game",
+        "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+      },
+      {
+        "rel": "category",
+        "uri": "https://www.speedrun.com/api/v1/categories/n2y3r8do"
+      },
+      {
+        "rel": "platform",
+        "uri": "https://www.speedrun.com/api/v1/platforms/v06dk3e4"
+      },
+      {
+        "rel": "region",
+        "uri": "https://www.speedrun.com/api/v1/regions/o316x197"
+      },
+      {
+        "rel": "examiner",
+        "uri": "https://www.speedrun.com/api/v1/users/o86d5k0j"
+      }
+    ]
+  }
+}

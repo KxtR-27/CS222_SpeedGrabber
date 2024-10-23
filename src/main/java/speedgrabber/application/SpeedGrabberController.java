@@ -23,7 +23,7 @@ public class SpeedGrabberController {
     private Button gameSearchButton;
 
     @FXML
-    private ChoiceBox categoryDropdown;
+    private ChoiceBox<Category> categoryDropdown;
 
     @FXML
     private TextArea leaderboardArea;
@@ -43,7 +43,6 @@ public class SpeedGrabberController {
 
             List<Category> categories = ApiDataGrabber.getCategories(game);
             for (Category category : categories)
-                //noinspection unchecked
                 categoryDropdown.getItems().add(category);
         }
         catch (Exception e) {
@@ -59,7 +58,7 @@ public class SpeedGrabberController {
             if (categoryDropdown.getValue() == null)
                 throw new NullPointerException("Category dropdown is empty. Please select a category first.");
 
-            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard((Category) categoryDropdown.getValue(), 20);
+            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), 20);
             StringBuilder leaderboardBuilder = new StringBuilder();
             for (Map.Entry<Integer, Run> entry : leaderboard.runs().entrySet())
                 leaderboardBuilder.append(String.format(

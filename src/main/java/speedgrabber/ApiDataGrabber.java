@@ -36,8 +36,8 @@ public class ApiDataGrabber {
     public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
         return JsonReader.create(fetchJson(category.linkToLeaderboard())).createLeaderboard(maxRuns);
     }
-    public static Run getRun(String id) throws IOException {
-        String runLink = String.format("https://www.speedrun.com/api/v1/runs/%s", id);
+    public static Run getRun(String runID) throws IOException {
+        String runLink = String.format("https://www.speedrun.com/api/v1/runs/%s", runID);
         return JsonReader.create(fetchJson(runLink)).createRun();
     }
 }

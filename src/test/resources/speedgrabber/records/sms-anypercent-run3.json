@@ -1,0 +1,81 @@
+{
+  "data": {
+    "id": "yoxx36dy",
+    "weblink": "https://www.speedrun.com/sms/run/yoxx36dy",
+    "game": "v1pxjz68",
+    "level": null,
+    "category": "n2y3r8do",
+    "videos": {
+      "links": [
+        {
+          "uri": "https://youtu.be/e8ceLLsJGFo"
+        }
+      ]
+    },
+    "comment": "the good: box game\n\nthe bad: 2nd try turbo gate, 2 deaths in bowser fight\n\ngonna do runs with underbell route after I\u0027m satisfied with wind waker",
+    "status": {
+      "status": "verified",
+      "examiner": "xk1pzo7j",
+      "verify-date": "2024-10-06T05:31:55Z"
+    },
+    "players": [
+      {
+        "rel": "user",
+        "id": "8r3064w8",
+        "uri": "https://www.speedrun.com/api/v1/users/8r3064w8"
+      }
+    ],
+    "date": "2024-10-05",
+    "submitted": "2024-10-05T05:59:20Z",
+    "times": {
+      "primary": "PT24M45S",
+      "primary_t": 1485,
+      "realtime": "PT24M45S",
+      "realtime_t": 1485,
+      "realtime_noloads": null,
+      "realtime_noloads_t": 0,
+      "ingame": null,
+      "ingame_t": 0
+    },
+    "system": {
+      "platform": "v06dk3e4",
+      "emulated": false,
+      "region": "o316x197"
+    },
+    "splits": {
+      "rel": "splits.io",
+      "uri": "https://splits.io/api/v3/runs/cm62"
+    },
+    "values": {
+      "2lggwk6l": "21gok6xq",
+      "j845md4n": "gq7on0vl",
+      "ylqxgz78": "qzn57z8q"
+    },
+    "links": [
+      {
+        "rel": "self",
+        "uri": "https://www.speedrun.com/api/v1/runs/yoxx36dy"
+      },
+      {
+        "rel": "game",
+        "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+      },
+      {
+        "rel": "category",
+        "uri": "https://www.speedrun.com/api/v1/categories/n2y3r8do"
+      },
+      {
+        "rel": "platform",
+        "uri": "https://www.speedrun.com/api/v1/platforms/v06dk3e4"
+      },
+      {
+        "rel": "region",
+        "uri": "https://www.speedrun.com/api/v1/regions/o316x197"
+      },
+      {
+        "rel": "examiner",
+        "uri": "https://www.speedrun.com/api/v1/users/xk1pzo7j"
+      }
+    ]
+  }
+}
