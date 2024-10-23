@@ -8,7 +8,7 @@ import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
 import speedgrabber.records.Run;
 
-import java.io.IOException;
+import javax.naming.NameNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,35 +28,60 @@ public class SpeedGrabberController {
     @FXML
     private TextArea leaderboardArea;
 
-    public void searchGame() throws IOException {
-        categoryDropdown.getItems().clear();
+    public void searchGame() {
+        try {
+            if (gameSearchField.getText().isEmpty())
+                throw new NameNotFoundException("Please enter a game abbreviation or ID.");
 
-        leaderboardArea.setText("");
-        gameSearchField.setDisable(true);
+            categoryDropdown.getItems().clear();
 
-        Game game = ApiDataGrabber.getGame(gameSearchField.getText());
-        gameLabel.setText(String.format("Game found: %s", game.name()));
+            leaderboardArea.setText("");
+            gameSearchField.setDisable(true);
 
-        List<Category> categories = ApiDataGrabber.getCategories(game);
-        for (Category category : categories)
-            //noinspection unchecked
-            categoryDropdown.getItems().add(category);
+            Game game = ApiDataGrabber.getGame(gameSearchField.getText());
+            gameLabel.setText(String.format("Game found: %s", game.name()));
 
-        gameSearchField.setText("");
-        gameSearchField.setDisable(false);
+            List<Category> categories = ApiDataGrabber.getCategories(game);
+            for (Category category : categories)
+                //noinspection unchecked
+                categoryDropdown.getItems().add(category);
+        }
+        catch (Exception e) {
+            showErrorDialog(e);
+        }
+        finally {
+            gameSearchField.setText("");
+            gameSearchField.setDisable(false);
+        }
     }
-    public void showCategoryLeaderboard() throws IOException {
-        if (categoryDropdown.getValue().equals(""))
-            return;
+    public void showCategoryLeaderboard() {
+        try {
+            if (categoryDropdown.getValue() == null)
+                throw new NullPointerException("Category dropdown is empty. Please select a category first.");
 
-        Leaderboard leaderboard = ApiDataGrabber.getLeaderboard((Category) categoryDropdown.getValue(), 20);
-        StringBuilder leaderboardBuilder = new StringBuilder();
-        for (Map.Entry<Integer, Run> entry : leaderboard.runs().entrySet())
-            leaderboardBuilder.append(String.format(
-                    "%d.\t%s%n",
-                    entry.getKey(),
-                    entry.getValue()));
+            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard((Category) categoryDropdown.getValue(), 20);
+            StringBuilder leaderboardBuilder = new StringBuilder();
+            for (Map.Entry<Integer, Run> entry : leaderboard.runs().entrySet())
+                leaderboardBuilder.append(String.format(
+                        "%d.\t%s%n",
+                        entry.getKey(),
+                        entry.getValue()));
 
-        leaderboardArea.setText(leaderboardBuilder.toString());
+            leaderboardArea.setText(leaderboardBuilder.toString());
+        }
+        catch (Exception e) {
+            showErrorDialog(e);
+        }
+    }
+
+    private void showErrorDialog(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        String exceptionName = e.getClass().getSimpleName();
+        String exceptionDetails = e.getMessage();
+
+        alert.setTitle("Error");
+        alert.setHeaderText(exceptionName);
+        alert.setContentText(exceptionDetails);
+        alert.showAndWait();
     }
 }

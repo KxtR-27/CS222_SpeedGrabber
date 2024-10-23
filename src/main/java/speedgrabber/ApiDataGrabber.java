@@ -26,7 +26,7 @@ public class ApiDataGrabber {
         gameTitle = URLEncoder.encode(gameTitle, StandardCharsets.UTF_8);
         String gameLink = String.format("https://www.speedrun.com/api/v1/games/%s", gameTitle);
 
-        return JsonReader.create(fetchJson(gameLink)).createGameData();
+        return JsonReader.create(fetchJson(gameLink)).createGame();
     }
 
     public static List<Category> getCategories(Game game) throws IOException {

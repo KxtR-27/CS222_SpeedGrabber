@@ -36,7 +36,7 @@ public class JsonReader {
         return JsonPath.read(JSON, String.format("$.%s", key));
     }
 
-    public Game createGameData() {
+    public Game createGame() {
         return new Game(
                 definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
@@ -46,7 +46,6 @@ public class JsonReader {
                 definiteScan("data.links[3].uri")
         );
     }
-
     public List<Category> createCategoryList() {
         int listSize = scanLength("data");
         List<Category> toReturn = new ArrayList<>(listSize);
@@ -66,7 +65,6 @@ public class JsonReader {
 
         return toReturn;
     }
-
     public Leaderboard createLeaderboard(int maxRuns) throws IOException {
         String webLink = definiteScan("data.weblink");
 
@@ -85,7 +83,6 @@ public class JsonReader {
 
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
     }
-
     public Run createRun() {
         return new Run(
                 definiteScan("data.weblink"),
