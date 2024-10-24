@@ -78,6 +78,8 @@ public class SpeedGrabberController {
         String exceptionName = e.getClass().getSimpleName();
         String exceptionDetails = e.getMessage();
 
+        e.printStackTrace(System.err);
+
         alert.setTitle("Error");
         alert.setHeaderText(exceptionName);
         alert.setContentText(exceptionDetails);

@@ -1,5 +1,7 @@
 package speedgrabber.records;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record Run(
@@ -11,6 +13,7 @@ public record Run(
         String categoryLink,
         List<String> playerLinks,
 
-        String date_submitted,
+        LocalDate dateOfRun,
+        LocalDateTime dateOfSubmission,
         String primaryTime
 ) {}
