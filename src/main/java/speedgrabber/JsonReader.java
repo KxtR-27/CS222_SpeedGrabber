@@ -103,7 +103,7 @@ public class JsonReader {
 
                 SGUtils.asLocalDate(definiteScan("data.date")),
                 SGUtils.asLocalDateTime(definiteScan("data.submitted")),
-                definiteScan("data.times.primary")
+                SGUtils.asLocalTime(definiteScan("data.times.primary"))
         );
     }
 

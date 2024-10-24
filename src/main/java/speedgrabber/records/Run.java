@@ -2,6 +2,7 @@ package speedgrabber.records;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public record Run(
@@ -15,5 +16,5 @@ public record Run(
 
         LocalDate dateOfRun,
         LocalDateTime dateOfSubmission,
-        String primaryTime
+        LocalTime primaryTime
 ) {}
