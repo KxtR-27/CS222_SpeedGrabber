@@ -10,7 +10,6 @@ import speedgrabber.records.Run;
 
 import javax.naming.NameNotFoundException;
 import java.util.List;
-import java.util.Map;
 
 @SuppressWarnings({"unused"})
 public class SpeedGrabberController {
@@ -60,11 +59,8 @@ public class SpeedGrabberController {
 
             Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), 20);
             StringBuilder leaderboardBuilder = new StringBuilder();
-            for (Map.Entry<Integer, Run> entry : leaderboard.runs().entrySet())
-                leaderboardBuilder.append(String.format(
-                        "%d.\t%s%n",
-                        entry.getKey(),
-                        entry.getValue()));
+            for (Run run : leaderboard.runs())
+                leaderboardBuilder.append(String.format("%s%n", run));
 
             leaderboardArea.setText(leaderboardBuilder.toString());
         }

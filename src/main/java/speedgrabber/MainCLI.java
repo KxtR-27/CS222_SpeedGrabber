@@ -7,7 +7,6 @@ import speedgrabber.records.Run;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class MainCLI {
@@ -32,8 +31,8 @@ public class MainCLI {
 
         Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryList.get(categoryIndex), 20);
         System.out.printf("%nLeaderboard for: %s%n%s%n", categoryList.get(categoryIndex).name(), "-".repeat(20));
-        for (Map.Entry<Integer, Run> entry : leaderboard.runs().entrySet())
-            System.out.printf("#%-3s %s%n", String.format("%d.", entry.getKey()), entry.getValue());
+        for (Run run : leaderboard.runs())
+            System.out.printf("#%-3s %s%n", String.format("%d.", run.place()), run);
         System.out.println("-".repeat(20));
 
         consoleScanner.close();

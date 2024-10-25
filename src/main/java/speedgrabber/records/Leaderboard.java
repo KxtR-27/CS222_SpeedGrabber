@@ -1,6 +1,6 @@
 package speedgrabber.records;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 
 public record Leaderboard(
         String weblink,
@@ -9,5 +9,5 @@ public record Leaderboard(
         String categoryLink,
 
         String timing,
-        LinkedHashMap<Integer, Run> runs
+        List<Run> runs
 ) {}

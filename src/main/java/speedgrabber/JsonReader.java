@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class JsonReader {
@@ -80,18 +79,19 @@ public class JsonReader {
         String categoryLink = definiteScan("data.links[1].uri");
 
         String timing = definiteScan("data.timing");
-        LinkedHashMap<Integer, Run> runs = new LinkedHashMap<>();
+        List<Run> runs = new ArrayList<>();
 
         for (int i = 0; i < maxRuns && i < scanLength("data.runs"); i++) {
-            runs.put(
-                    scanInt(String.format("data.runs[%d].place", i)),
-                    ApiDataGrabber.getRun(definiteScan(String.format("data.runs[%d].run.id", i)))
-            );
+            runs.add(ApiDataGrabber.getRun(
+                    definiteScan(String.format("data.runs[%d].run.id", i)),
+                    scanInt(String.format("data.runs[%d].place", i))
+            ));
         }
 
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
     }
-    public Run createRun() {
+
+    public Run createRun(int place) {
         return new Run(
                 definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
@@ -101,6 +101,7 @@ public class JsonReader {
                 definiteScan("data.links[2].uri"),
                 indefiniteScan("players[*].uri"),
 
+                place,
                 SGUtils.asLocalDate(definiteScan("data.date")),
                 SGUtils.asLocalDateTime(definiteScan("data.submitted")),
                 SGUtils.asLocalTime(definiteScan("data.times.primary"))
@@ -114,11 +115,11 @@ public class JsonReader {
         String categoryLink = definiteScan("data.links[1].uri");
 
         String timing = definiteScan("data.timing");
-        LinkedHashMap<Integer, Run> runs = new LinkedHashMap<>();
+        List<Run> runs = new ArrayList<>();
 
-        runs.put(1, JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run1.json"), StandardCharsets.UTF_8)).createRun());
-        runs.put(2, JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run2.json"), StandardCharsets.UTF_8)).createRun());
-        runs.put(3, JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run3.json"), StandardCharsets.UTF_8)).createRun());
+        runs.add(JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run1.json"), StandardCharsets.UTF_8)).createRun(1));
+        runs.add(JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run2.json"), StandardCharsets.UTF_8)).createRun(2));
+        runs.add(JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run3.json"), StandardCharsets.UTF_8)).createRun(3));
 
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
     }

@@ -12,7 +12,6 @@ import speedgrabber.records.Run;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class JsonReaderTest {
@@ -65,10 +64,11 @@ public class JsonReaderTest {
     // This method also tests createRun()
     @Test
     public void test_createLeaderboard() throws IOException {
-        LinkedHashMap<Integer, Run> expectedRuns = new LinkedHashMap<>();
-        expectedRuns.put(1, new Run("https://www.speedrun.com/sms/run/zppv46rz", "https://www.speedrun.com/api/v1/runs/zppv46rz", "zppv46rz", "https://www.speedrun.com/api/v1/games/v1pxjz68", "https://www.speedrun.com/api/v1/categories/z27o9gd0", List.of("https://www.speedrun.com/api/v1/users/98r1n2qj"), SGUtils.asLocalDate("2024-01-21"), SGUtils.asLocalDateTime("2024-01-21T12:20:16Z"), SGUtils.asLocalTime("PT2H51M34S")));
-        expectedRuns.put(2, new Run("https://www.speedrun.com/sms/run/megl1l9y", "https://www.speedrun.com/api/v1/runs/megl1l9y", "megl1l9y", "https://www.speedrun.com/api/v1/games/v1pxjz68", "https://www.speedrun.com/api/v1/categories/n2y3r8do", List.of("https://www.speedrun.com/api/v1/users/dx3ml28l"), SGUtils.asLocalDate("2024-09-16"), SGUtils.asLocalDateTime("2024-09-17T02:51:23Z"), SGUtils.asLocalTime("PT23M57S")));
-        expectedRuns.put(3, new Run("https://www.speedrun.com/sms/run/yoxx36dy", "https://www.speedrun.com/api/v1/runs/yoxx36dy", "yoxx36dy", "https://www.speedrun.com/api/v1/games/v1pxjz68", "https://www.speedrun.com/api/v1/categories/n2y3r8do", List.of("https://www.speedrun.com/api/v1/users/8r3064w8"), SGUtils.asLocalDate("2024-10-05"), SGUtils.asLocalDateTime("2024-10-05T05:59:20Z"), SGUtils.asLocalTime("PT24M45S")));
+        List<Run> expectedRuns = List.of(
+                new Run("https://www.speedrun.com/sms/run/zppv46rz", "https://www.speedrun.com/api/v1/runs/zppv46rz", "zppv46rz", "https://www.speedrun.com/api/v1/games/v1pxjz68", "https://www.speedrun.com/api/v1/categories/z27o9gd0", List.of("https://www.speedrun.com/api/v1/users/98r1n2qj"), 1, SGUtils.asLocalDate("2024-01-21"), SGUtils.asLocalDateTime("2024-01-21T12:20:16Z"), SGUtils.asLocalTime("PT2H51M34S")),
+                new Run("https://www.speedrun.com/sms/run/megl1l9y", "https://www.speedrun.com/api/v1/runs/megl1l9y", "megl1l9y", "https://www.speedrun.com/api/v1/games/v1pxjz68", "https://www.speedrun.com/api/v1/categories/n2y3r8do", List.of("https://www.speedrun.com/api/v1/users/dx3ml28l"), 2, SGUtils.asLocalDate("2024-09-16"), SGUtils.asLocalDateTime("2024-09-17T02:51:23Z"), SGUtils.asLocalTime("PT23M57S")),
+                new Run("https://www.speedrun.com/sms/run/yoxx36dy", "https://www.speedrun.com/api/v1/runs/yoxx36dy", "yoxx36dy", "https://www.speedrun.com/api/v1/games/v1pxjz68", "https://www.speedrun.com/api/v1/categories/n2y3r8do", List.of("https://www.speedrun.com/api/v1/users/8r3064w8"), 3, SGUtils.asLocalDate("2024-10-05"), SGUtils.asLocalDateTime("2024-10-05T05:59:20Z"), SGUtils.asLocalTime("PT24M45S"))
+        );
 
         Leaderboard expectedLeaderboard = new Leaderboard(
                 "https://www.speedrun.com/sms#120_Shines",

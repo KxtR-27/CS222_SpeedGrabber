@@ -23,6 +23,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation("commons-io:commons-io:2.17.0")
+
+    // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
+    implementation("org.ocpsoft.prettytime:prettytime:5.0.9.Final")
 }
 
 tasks.test {
