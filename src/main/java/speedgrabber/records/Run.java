@@ -10,12 +10,16 @@ public record Run(
         String selfLink,
         String id,
 
-        List<String> linksToPlayers,
-        String linkToCategory,
-        String linkToGame,
+        List<String> playerLinks,
+        String categoryLink,
+        String gameLink,
 
         int place,
         LocalDate dateOfRun,
         LocalDateTime dateOfSubmission,
         LocalTime primaryTime
-) {}
+
+) implements Identifiable {
+    @Override
+    public String getSelfLink() {return selfLink;}
+}

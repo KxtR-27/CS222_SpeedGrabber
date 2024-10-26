@@ -6,5 +6,9 @@ public record Game(
         String id,
         String name,
 
-        String linkToCategories
-) {}
+        String categoryLink
+
+) implements Identifiable {
+    @Override
+    public String getSelfLink() {return selfLink;}
+}

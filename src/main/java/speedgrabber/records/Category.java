@@ -6,11 +6,17 @@ public record Category(
         String id,
         String name,
 
-        String linkToLeaderboard,
-        String linkToGame
-) {
+        String leaderboardLink,
+        String gameLink
+
+) implements Identifiable {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public String getSelfLink() {
+        return selfLink;
     }
 }

@@ -30,11 +30,11 @@ public class ApiDataGrabber {
     }
 
     public static List<Category> getCategories(Game game) throws IOException {
-        return JsonReader.create(fetchJson(game.linkToCategories())).createCategoryList();
+        return JsonReader.create(fetchJson(game.categoryLink())).createCategoryList();
     }
 
     public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
-        return JsonReader.create(fetchJson(category.linkToLeaderboard())).createLeaderboard(maxRuns);
+        return JsonReader.create(fetchJson(category.leaderboardLink())).createLeaderboard(maxRuns);
     }
 
     public static Run getRun(String runID, int place) throws IOException {
