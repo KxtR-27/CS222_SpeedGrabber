@@ -10,16 +10,12 @@ public record Run(
         String selfLink,
         String id,
 
-        String gameLink,
-        String categoryLink,
-        List<String> playerLinks,
+        List<String> linksToPlayers,
+        String linkToCategory,
+        String linkToGame,
 
         int place,
         LocalDate dateOfRun,
         LocalDateTime dateOfSubmission,
         LocalTime primaryTime
-) {
-    public Run(String webLink, String selfLink, String id, String gameLink, String categoryLink, List<String> playerLinks, LocalDate dateOfRun, LocalDateTime dateOfSubmission, LocalTime primaryTime) {
-        this(webLink, selfLink, id, gameLink, categoryLink, playerLinks, -1, dateOfRun, dateOfSubmission, primaryTime);
-    }
-}
+) {}

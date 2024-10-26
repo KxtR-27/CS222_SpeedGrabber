@@ -41,4 +41,7 @@ public class ApiDataGrabber {
         String runLink = String.format("https://www.speedrun.com/api/v1/runs/%s", runID);
         return JsonReader.create(fetchJson(runLink)).createRun(place);
     }
+    public static Run getRun(String runID) throws IOException {
+        return getRun(runID, -1);
+    }
 }

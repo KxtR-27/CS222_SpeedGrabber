@@ -5,8 +5,8 @@ import java.util.List;
 public record Leaderboard(
         String weblink,
 
-        String gameLink,
-        String categoryLink,
+        String linkToCategory,
+        String linkToGame,
 
         String timing,
         List<Run> runs

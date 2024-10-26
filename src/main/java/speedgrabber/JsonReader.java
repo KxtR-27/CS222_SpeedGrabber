@@ -43,6 +43,7 @@ public class JsonReader {
         return JsonPath.read(JSON, String.format("$.%s", key));
     }
 
+
     public Game createGame() {
         return new Game(
                 definiteScan("data.weblink"),
@@ -53,6 +54,7 @@ public class JsonReader {
                 definiteScan("data.links[3].uri")
         );
     }
+
     public List<Category> createCategoryList() {
         int listSize = scanLength("data");
         List<Category> toReturn = new ArrayList<>(listSize);
@@ -72,6 +74,7 @@ public class JsonReader {
 
         return toReturn;
     }
+
     public Leaderboard createLeaderboard(int maxRuns) throws IOException {
         String webLink = definiteScan("data.weblink");
 
@@ -90,24 +93,6 @@ public class JsonReader {
 
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
     }
-
-    public Run createRun(int place) {
-        return new Run(
-                definiteScan("data.weblink"),
-                definiteScan("data.links[0].uri"),
-                definiteScan("data.id"),
-
-                definiteScan("data.links[1].uri"),
-                definiteScan("data.links[2].uri"),
-                indefiniteScan("players[*].uri"),
-
-                place,
-                SGUtils.asLocalDate(definiteScan("data.date")),
-                SGUtils.asLocalDateTime(definiteScan("data.submitted")),
-                SGUtils.asLocalTime(definiteScan("data.times.primary"))
-        );
-    }
-
     public Leaderboard test_createLeaderboard() throws IOException {
         String webLink = definiteScan("data.weblink");
 
@@ -123,4 +108,25 @@ public class JsonReader {
 
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
     }
+
+    public Run createRun(int place) {
+        return new Run(
+                definiteScan("data.weblink"),
+                definiteScan("data.links[0].uri"),
+                definiteScan("data.id"),
+
+                indefiniteScan("players[*].uri"),
+                definiteScan("data.links[2].uri"),
+                definiteScan("data.links[1].uri"),
+
+                place,
+                SGUtils.asLocalDate(definiteScan("data.date")),
+                SGUtils.asLocalDateTime(definiteScan("data.submitted")),
+                SGUtils.asLocalTime(definiteScan("data.times.primary"))
+        );
+    }
+    public Run createRun() {
+        return createRun(-1);
+    }
+
 }
