@@ -30,8 +30,10 @@ public class MainCLI {
         int categoryIndex = Integer.parseInt(consoleScanner.nextLine()) - 1;
 
         Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryList.get(categoryIndex), 20);
+        List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard);
+
         System.out.printf("%nLeaderboard for: %s%n%s%n", categoryList.get(categoryIndex).name(), "-".repeat(20));
-        for (Run run : leaderboard.runs())
+        for (Run run : leaderboardRuns)
             System.out.printf("#%-3s %s%n", String.format("%d.", run.place()), run);
         System.out.println("-".repeat(20));
 

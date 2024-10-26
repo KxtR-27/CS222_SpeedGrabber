@@ -58,8 +58,10 @@ public class SpeedGrabberController {
                 throw new NullPointerException("Category dropdown is empty. Please select a category first.");
 
             Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), 20);
+            List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard);
+
             StringBuilder leaderboardBuilder = new StringBuilder();
-            for (Run run : leaderboard.runs())
+            for (Run run : leaderboardRuns)
                 leaderboardBuilder.append(String.format("%s%n", run));
 
             leaderboardArea.setText(leaderboardBuilder.toString());

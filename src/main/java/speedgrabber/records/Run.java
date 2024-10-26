@@ -21,5 +21,5 @@ public record Run(
 
 ) implements Identifiable {
     @Override
-    public String getSelfLink() {return selfLink;}
+    public String identify() {return selfLink;}
 }

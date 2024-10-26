@@ -1,14 +1,16 @@
 package speedgrabber.records;
 
+import java.util.List;
+
 public record Game(
         String weblink,
         String selfLink,
         String id,
         String name,
 
-        String categoryLink
+        String categoriesLink
 
 ) implements Identifiable {
     @Override
-    public String getSelfLink() {return selfLink;}
+    public String identify() {return selfLink;}
 }

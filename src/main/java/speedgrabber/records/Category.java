@@ -16,7 +16,7 @@ public record Category(
     }
 
     @Override
-    public String getSelfLink() {
+    public String identify() {
         return selfLink;
     }
 }

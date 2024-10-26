@@ -61,25 +61,28 @@ public class JsonReaderTest {
         Assertions.assertEquals(expectedCategoryList, actualCategoryList);
     }
 
-    // This method also tests createRun()
     @Test
     public void test_createLeaderboard() throws IOException {
-        List<Run> expectedRuns = List.of(
-                new Run("https://www.speedrun.com/sms/run/zppv46rz", "https://www.speedrun.com/api/v1/runs/zppv46rz", "zppv46rz", List.of("https://www.speedrun.com/api/v1/users/98r1n2qj"), "https://www.speedrun.com/api/v1/categories/z27o9gd0", "https://www.speedrun.com/api/v1/games/v1pxjz68", 1, SGUtils.asLocalDate("2024-01-21"), SGUtils.asLocalDateTime("2024-01-21T12:20:16Z"), SGUtils.asLocalTime("PT2H51M34S")),
-                new Run("https://www.speedrun.com/sms/run/megl1l9y", "https://www.speedrun.com/api/v1/runs/megl1l9y", "megl1l9y", List.of("https://www.speedrun.com/api/v1/users/dx3ml28l"), "https://www.speedrun.com/api/v1/categories/n2y3r8do", "https://www.speedrun.com/api/v1/games/v1pxjz68", 2, SGUtils.asLocalDate("2024-09-16"), SGUtils.asLocalDateTime("2024-09-17T02:51:23Z"), SGUtils.asLocalTime("PT23M57S")),
-                new Run("https://www.speedrun.com/sms/run/yoxx36dy", "https://www.speedrun.com/api/v1/runs/yoxx36dy", "yoxx36dy", List.of("https://www.speedrun.com/api/v1/users/8r3064w8"), "https://www.speedrun.com/api/v1/categories/n2y3r8do", "https://www.speedrun.com/api/v1/games/v1pxjz68", 3, SGUtils.asLocalDate("2024-10-05"), SGUtils.asLocalDateTime("2024-10-05T05:59:20Z"), SGUtils.asLocalTime("PT24M45S"))
+        List<String> expectedRunLinks = List.of(
+                "https://www.speedrun.com/api/v1/runs/mrx0238m",
+                "https://www.speedrun.com/api/v1/runs/megl1l9y",
+                "https://www.speedrun.com/api/v1/runs/yoxx36dy"
+        );
+        List<Integer> expectedRunPlaces = List.of(
+                1, 2, 3
         );
 
         Leaderboard expectedLeaderboard = new Leaderboard(
-                "https://www.speedrun.com/sms#120_Shines",
+                "https://www.speedrun.com/sms#Any",
 
                 "https://www.speedrun.com/api/v1/games/v1pxjz68",
-                "https://www.speedrun.com/api/v1/categories/z27o9gd0",
+                "https://www.speedrun.com/api/v1/categories/n2y3r8do",
 
                 "realtime",
-                expectedRuns
+                expectedRunLinks,
+                expectedRunPlaces
         );
-        Leaderboard actualLeaderboard = leaderboardReader.test_createLeaderboard();
+        Leaderboard actualLeaderboard = leaderboardReader.createLeaderboard(3);
 
         Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
     }

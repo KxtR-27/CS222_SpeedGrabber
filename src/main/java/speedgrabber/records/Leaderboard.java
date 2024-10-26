@@ -9,11 +9,12 @@ public record Leaderboard(
         String gameLink,
 
         String timing,
-        List<Run> runs
+        List<String> runLinks,
+        List<Integer> runPlaces
 
 ) implements Identifiable {
     @Override
-    public String getSelfLink() {
+    public String identify() {
         String gameID = gameLink.split("/")[gameLink.split("/").length - 1];
         String categoryID = categoryLink.split("/")[categoryLink.split("/").length - 1];
 

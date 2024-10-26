@@ -82,31 +82,20 @@ public class JsonReader {
         String categoryLink = definiteScan("data.links[1].uri");
 
         String timing = definiteScan("data.timing");
-        List<Run> runs = new ArrayList<>();
+        List<String> runLinks = new ArrayList<>();
+        List<Integer> runPlaces = new ArrayList<>();
 
         for (int i = 0; i < maxRuns && i < scanLength("data.runs"); i++) {
-            runs.add(ApiDataGrabber.getRun(
-                    definiteScan(String.format("data.runs[%d].run.id", i)),
-                    scanInt(String.format("data.runs[%d].place", i))
+            runLinks.add(String.format(
+                    "https://www.speedrun.com/api/v1/runs/%s",
+                    definiteScan(String.format("data.runs[%d].run.id", i))
             ));
+            runPlaces.add(
+                    scanInt(String.format("data.runs[%d].place", i))
+            );
         }
 
-        return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
-    }
-    public Leaderboard test_createLeaderboard() throws IOException {
-        String webLink = definiteScan("data.weblink");
-
-        String gameLink = definiteScan("data.links[0].uri");
-        String categoryLink = definiteScan("data.links[1].uri");
-
-        String timing = definiteScan("data.timing");
-        List<Run> runs = new ArrayList<>();
-
-        runs.add(JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run1.json"), StandardCharsets.UTF_8)).createRun(1));
-        runs.add(JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run2.json"), StandardCharsets.UTF_8)).createRun(2));
-        runs.add(JsonReader.create(IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run3.json"), StandardCharsets.UTF_8)).createRun(3));
-
-        return new Leaderboard(webLink, gameLink, categoryLink, timing, runs);
+        return new Leaderboard(webLink, gameLink, categoryLink, timing, runLinks, runPlaces);
     }
 
     public Run createRun(int place) {
