@@ -2,80 +2,102 @@ package speedgrabber;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.io.IOUtils;
-import speedgrabber.records.Category;
-import speedgrabber.records.Game;
-import speedgrabber.records.Leaderboard;
-import speedgrabber.records.Run;
+import speedgrabber.records.*;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonReader {
-    private final Object JSON;
+    private static Object currentJsonDocument;
 
-    public static JsonReader create(String json) {
-        return new JsonReader(json);
+    private static void loadJsonDocument(String json) {
+        currentJsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(json);
     }
-    private JsonReader(String json) {
-        JSON = Configuration.defaultConfiguration().jsonProvider().parse(json);
-    }
-
-    private String definiteScan(String keyPath) {
-        return JsonPath.read(JSON, String.format("$.%s", keyPath));
+    private static void cleanupEscapedList(List<String> escapedList) {
+        for (String escapedString : escapedList) {
+            while (escapedString.contains("\"")) {
+                int quoteIndex = escapedString.indexOf("\"");
+                escapedString = (escapedString.substring(0, quoteIndex)) + (escapedString.substring(quoteIndex + 2));
+            }
+            while (escapedString.contains("\\")) {
+                int backslashIndex = escapedList.indexOf("\\");
+                escapedString = (escapedString.substring(0, backslashIndex)) + (escapedString.substring(backslashIndex + 2));
+            }
+        }
     }
 
     // This method is designed to be generic.
     // In the future, it will have more uses.
     // Then, the "SameParameterValue" warning will cease to exist.
     @SuppressWarnings("SameParameterValue")
-    private List<String> indefiniteScan(String key) {
-        return JsonPath.read(JSON, String.format("$..%s", key));
+    private static List<String> indefiniteScan(String key) {
+        List<String> indefiniteResults = JsonPath.read(currentJsonDocument, String.format("$..%s", key));
+        cleanupEscapedList(indefiniteResults);
+        return indefiniteResults;
+    }
+    private static String definiteScan(String keyPath) {
+        return JsonPath.read(currentJsonDocument, String.format("$.%s", keyPath));
+    }
+    private static int scanInt(String key) {
+        return JsonPath.read(currentJsonDocument, String.format("$.%s", key));
     }
 
-    private int scanLength(String key) {
-        return JsonPath.read(JSON, String.format("$..%s.length()", key));
-    }
-    private int scanInt(String key) {
-        return JsonPath.read(JSON, String.format("$.%s", key));
-    }
 
+    public static Game createGame(String gameJson, String categoriesJson) {
+        loadJsonDocument(categoriesJson);
+        List<String> categoryLinks = indefiniteScan("links[0].uri");
 
-    public Game createGame() {
+        loadJsonDocument(gameJson);
         return new Game(
                 definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
                 definiteScan("data.id"),
                 definiteScan("data.names.international"),
 
-                definiteScan("data.links[3].uri")
+                categoryLinks
         );
     }
 
-    public List<Category> createCategoryList() {
-        int listSize = scanLength("data");
-        List<Category> toReturn = new ArrayList<>(listSize);
+    public static Category createCategory(String categoryJson) {
+        loadJsonDocument(categoryJson);
+        String type = definiteScan("data.type");
 
-        for (int i = 0; i < listSize; i++) {
-            if (definiteScan(String.format("data[%d].type", i)).equals("per-game"))
-                toReturn.add(new Category(
-                        definiteScan(String.format("data[%d].weblink", i)),
-                        definiteScan(String.format("data[%d].links[0].uri", i)),
-                        definiteScan(String.format("data[%d].id", i)),
-                        definiteScan(String.format("data[%d].name", i)),
+        switch (type) {
+            case "per-game" -> {
+                return new Category(
+                        definiteScan("data.weblink"),
+                        definiteScan("data.links[0].uri"),
+                        definiteScan("data.id"),
+                        definiteScan("data.name"),
 
-                        definiteScan(String.format("data[%d].links[5].uri", i)),
-                        definiteScan(String.format("data[%d].links[1].uri", i))
-                ));
+                        definiteScan("data.links[5].uri"),
+                        definiteScan("data.links[1].uri"),
+
+                        type
+                );
+            }
+            case "per-level" -> {
+                return new Category(
+                        definiteScan("data.weblink"),
+                        definiteScan("data.links[0].uri"),
+                        definiteScan("data.id"),
+                        definiteScan("data.name"),
+
+                        // Apparently, per-level categories have no leaderboard--only records.
+                        null,
+                        definiteScan("data.links[1].uri"),
+
+                        type
+                );
+            }
         }
 
-        return toReturn;
+        return null;
     }
 
-    public Leaderboard createLeaderboard(int maxRuns) throws IOException {
+    public static Leaderboard createLeaderboard(String leaderboardJson, int maxRuns) {
+        loadJsonDocument(leaderboardJson);
+
         String webLink = definiteScan("data.weblink");
 
         String gameLink = definiteScan("data.links[0].uri");
@@ -85,7 +107,7 @@ public class JsonReader {
         List<String> runLinks = new ArrayList<>();
         List<Integer> runPlaces = new ArrayList<>();
 
-        for (int i = 0; i < maxRuns && i < scanLength("data.runs"); i++) {
+        for (int i = 0; i < maxRuns && i < scanInt("data.runs.length()"); i++) {
             runLinks.add(String.format(
                     "https://www.speedrun.com/api/v1/runs/%s",
                     definiteScan(String.format("data.runs[%d].run.id", i))
@@ -98,7 +120,8 @@ public class JsonReader {
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runLinks, runPlaces);
     }
 
-    public Run createRun(int place) {
+    public static Run createRun(String runJson, int place) {
+        loadJsonDocument(runJson);
         return new Run(
                 definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
@@ -113,9 +136,6 @@ public class JsonReader {
                 SGUtils.asLocalDateTime(definiteScan("data.submitted")),
                 SGUtils.asLocalTime(definiteScan("data.times.primary"))
         );
-    }
-    public Run createRun() {
-        return createRun(-1);
     }
 
 }

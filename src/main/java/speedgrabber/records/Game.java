@@ -8,7 +8,7 @@ public record Game(
         String id,
         String name,
 
-        String categoriesLink
+        List<String> categoryLinks
 
 ) implements Identifiable {
     @Override

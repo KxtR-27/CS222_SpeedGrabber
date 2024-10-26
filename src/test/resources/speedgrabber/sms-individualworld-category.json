@@ -1,0 +1,36 @@
+{
+  "data": {
+    "id": "xd1r95wk",
+    "name": "Individual World",
+    "weblink": "https://www.speedrun.com/sms",
+    "type": "per-level",
+    "rules": "Complete episodes 1-7.\r\nIn Bianco Hills, you may skip episode 1.\r\nIn Pinna Park, you may perform Early Yoshi Go-round instead of episodes 5 and 6.\r\nAll forms of Gelato Beach Skip are banned.\r\nDo not use FLUDD in secret levels.\r\n\r\n\r\n- Timing starts when you select the first shine and ends when Mario holds up the final shine.\r\n- 1st place runs must include video.\r\n- Emulator, SD and USB are all banned.",
+    "players": {
+      "type": "exactly",
+      "value": 1
+    },
+    "miscellaneous": false,
+    "links": [
+      {
+        "rel": "self",
+        "uri": "https://www.speedrun.com/api/v1/categories/xd1r95wk"
+      },
+      {
+        "rel": "game",
+        "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+      },
+      {
+        "rel": "variables",
+        "uri": "https://www.speedrun.com/api/v1/categories/xd1r95wk/variables"
+      },
+      {
+        "rel": "records",
+        "uri": "https://www.speedrun.com/api/v1/categories/xd1r95wk/records"
+      },
+      {
+        "rel": "runs",
+        "uri": "https://www.speedrun.com/api/v1/runs?category=xd1r95wk"
+      }
+    ]
+  }
+}

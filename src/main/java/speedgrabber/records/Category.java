@@ -7,7 +7,9 @@ public record Category(
         String name,
 
         String leaderboardLink,
-        String gameLink
+        String gameLink,
+
+        String type
 
 ) implements Identifiable {
     @Override

@@ -16,53 +16,86 @@ import java.util.List;
 
 public class JsonReaderTest {
     @BeforeAll
-    public static void initializeJsonReaders() throws IOException {
-        String gameJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-game.json"), StandardCharsets.UTF_8);
-        String categoryListJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-categories.json"), StandardCharsets.UTF_8);
-        String leaderboardJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-leaderboard.json"), StandardCharsets.UTF_8);
-
-        gameReader = JsonReader.create(gameJson);
-        categoryListReader = JsonReader.create(categoryListJson);
-        leaderboardReader = JsonReader.create(leaderboardJson);
-    }
-    static JsonReader gameReader;
-    static JsonReader categoryListReader;
-    static JsonReader leaderboardReader;
+    public static void initializeJsonFiles() throws IOException {
+        gameJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-game.json"), StandardCharsets.UTF_8);
+        categoryListJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-categories.json"), StandardCharsets.UTF_8);
+        categoryPerGameJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-category.json"), StandardCharsets.UTF_8);
+        categoryPerLevelJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-individualworld-category.json"), StandardCharsets.UTF_8);
+        leaderboardJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-leaderboard.json"), StandardCharsets.UTF_8);
+        run1Json = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run1.json"), StandardCharsets.UTF_8);
+   }
+    static String gameJson;
+    static String categoryListJson;
+    static String categoryPerGameJson;
+    static String categoryPerLevelJson;
+    static String leaderboardJson;
+    static String run1Json;
 
     @Test
     public void test_createGame() {
+        List<String> expectedCategoryLinks = List.of(
+                "https://www.speedrun.com/api/v1/categories/n2y3r8do",
+                "https://www.speedrun.com/api/v1/categories/z27o9gd0",
+                "https://www.speedrun.com/api/v1/categories/xk9n9y20",
+                "https://www.speedrun.com/api/v1/categories/7kjqlxd3",
+                "https://www.speedrun.com/api/v1/categories/wkpmjjkr",
+                "https://www.speedrun.com/api/v1/categories/xd1r95wk",
+                "https://www.speedrun.com/api/v1/categories/xd14l37d",
+                "https://www.speedrun.com/api/v1/categories/w203veo2",
+                "https://www.speedrun.com/api/v1/categories/wdm6lm3k",
+                "https://www.speedrun.com/api/v1/categories/ndx4ywj2",
+                "https://www.speedrun.com/api/v1/categories/xk9e86v2"
+        );
+
         Game expectedGame = new Game(
                 "https://www.speedrun.com/sms",
                 "https://www.speedrun.com/api/v1/games/v1pxjz68",
                 "v1pxjz68",
                 "Super Mario Sunshine",
 
-                "https://www.speedrun.com/api/v1/games/v1pxjz68/categories"
+                expectedCategoryLinks
         );
-        Game actualGame = gameReader.createGame();
+        Game actualGame = JsonReader.createGame(gameJson, categoryListJson);
 
         Assertions.assertEquals(expectedGame, actualGame);
     }
 
     @Test
-    public void test_createCategoryList() {
-        List<Category> expectedCategoryList = List.of(
-                new Category("https://www.speedrun.com/sms#Any", "https://www.speedrun.com/api/v1/categories/n2y3r8do", "n2y3r8do", "Any%", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/n2y3r8do", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#120_Shines", "https://www.speedrun.com/api/v1/categories/z27o9gd0", "z27o9gd0", "120 Shines", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/z27o9gd0", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#96_Shines", "https://www.speedrun.com/api/v1/categories/xk9n9y20", "xk9n9y20", "96 Shines", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/xk9n9y20", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#79_Shines", "https://www.speedrun.com/api/v1/categories/7kjqlxd3", "7kjqlxd3", "79 Shines", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/7kjqlxd3", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#All_Episodes", "https://www.speedrun.com/api/v1/categories/wkpmjjkr", "wkpmjjkr", "All Episodes", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/wkpmjjkr", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#Any_Hoverless", "https://www.speedrun.com/api/v1/categories/xd14l37d", "xd14l37d", "Any% Hoverless", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/xd14l37d", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#All_Blue_Coins", "https://www.speedrun.com/api/v1/categories/ndx4ywj2", "ndx4ywj2", "All Blue Coins", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/ndx4ywj2", "https://www.speedrun.com/api/v1/games/v1pxjz68"),
-                new Category("https://www.speedrun.com/sms#20_Shines", "https://www.speedrun.com/api/v1/categories/xk9e86v2", "xk9e86v2", "20 Shines", "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/xk9e86v2", "https://www.speedrun.com/api/v1/games/v1pxjz68")
-        );
-        List<Category> actualCategoryList = categoryListReader.createCategoryList();
+    public void test_createCategory_perGame() {
+        Category expectedCategory = new Category(
+                "https://www.speedrun.com/sms#Any",
+                "https://www.speedrun.com/api/v1/categories/n2y3r8do",
+                "n2y3r8do",
+                "Any%",
 
-        Assertions.assertEquals(expectedCategoryList, actualCategoryList);
+                "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/n2y3r8do",
+                "https://www.speedrun.com/api/v1/games/v1pxjz68",
+
+                "per-game"
+        );
+        Category actualCategory = JsonReader.createCategory(categoryPerGameJson);
+
+        Assertions.assertEquals(expectedCategory, actualCategory);
+    }
+    @Test
+    public void test_createCategory_perLevel() {
+        Category expectedCategory = new Category(
+                "https://www.speedrun.com/sms",
+                "https://www.speedrun.com/api/v1/categories/xd1r95wk",
+                "xd1r95wk",
+                "Individual World",
+
+                null,
+                "https://www.speedrun.com/api/v1/games/v1pxjz68",
+                "per-level"
+        );
+        Category actualCategory = JsonReader.createCategory(categoryPerLevelJson);
+
+        Assertions.assertEquals(expectedCategory, actualCategory);
     }
 
     @Test
-    public void test_createLeaderboard() throws IOException {
+    public void test_createLeaderboard() {
         List<String> expectedRunLinks = List.of(
                 "https://www.speedrun.com/api/v1/runs/mrx0238m",
                 "https://www.speedrun.com/api/v1/runs/megl1l9y",
@@ -82,8 +115,29 @@ public class JsonReaderTest {
                 expectedRunLinks,
                 expectedRunPlaces
         );
-        Leaderboard actualLeaderboard = leaderboardReader.createLeaderboard(3);
+        Leaderboard actualLeaderboard = JsonReader.createLeaderboard(leaderboardJson, 3);
 
         Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
+    }
+
+    @Test
+    public void test_createRun() {
+        Run expectedRun = new Run(
+                "https://www.speedrun.com/sms/run/mrx0238m",
+                "https://www.speedrun.com/api/v1/runs/mrx0238m",
+                "mrx0238m",
+
+                List.of("https://www.speedrun.com/api/v1/users/kjprmwk8"),
+                "https://www.speedrun.com/api/v1/categories/n2y3r8do",
+                "https://www.speedrun.com/api/v1/games/v1pxjz68",
+
+                1,
+                SGUtils.asLocalDate("2024-09-26"),
+                SGUtils.asLocalDateTime("2024-10-14T08:11:12Z"),
+                SGUtils.asLocalTime("PT17M24S")
+        );
+        Run actualRun = JsonReader.createRun(run1Json, 1);
+
+        Assertions.assertEquals(expectedRun, actualRun);
     }
 }

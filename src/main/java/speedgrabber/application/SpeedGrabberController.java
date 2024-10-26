@@ -40,7 +40,7 @@ public class SpeedGrabberController {
             Game game = ApiDataGrabber.getGame(gameSearchField.getText());
             gameLabel.setText(String.format("Game found: %s", game.name()));
 
-            List<Category> categories = ApiDataGrabber.getCategories(game);
+            List<Category> categories = ApiDataGrabber.getListOfCategories(game);
             for (Category category : categories)
                 categoryDropdown.getItems().add(category);
         }

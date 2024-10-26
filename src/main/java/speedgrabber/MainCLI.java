@@ -20,7 +20,7 @@ public class MainCLI {
         Game game = ApiDataGrabber.getGame(gameNameInput);
         System.out.printf("Game Found! [%s]%n%n", game.name());
 
-        List<Category> categoryList = ApiDataGrabber.getCategories(game);
+        List<Category> categoryList = ApiDataGrabber.getListOfCategories(game);
         System.out.printf("Enter # for desired Category.%n%s%n", "-".repeat(20));
         for (int i = 1; i <= categoryList.size(); i++)
             System.out.printf("* %-3s %s%n", String.format("%d.", i), categoryList.get(i-1));
