@@ -3,6 +3,7 @@ package speedgrabber;
 import org.apache.commons.io.IOUtils;
 import speedgrabber.records.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
@@ -28,12 +29,16 @@ public class ApiDataGrabber {
     }
 
     private static String fetchJson(String url) throws IOException {
-        URL gameUrl = URI.create(url).toURL();
-        URLConnection connection = gameUrl.openConnection();
+        URL dataUrl = URI.create(url).toURL();
+        URLConnection connection = dataUrl.openConnection();
         connection.setRequestProperty("User-Agent", "SpeedGrabber/0.1a (connor.razo@bsu.edu)");
         InputStream urlStream = connection.getInputStream();
 
-        return IOUtils.toString(urlStream, StandardCharsets.UTF_8);
+        String json = IOUtils.toString(urlStream, StandardCharsets.UTF_8);
+        if (JsonReader.jsonContains404Error(json))
+            throw new FileNotFoundException(String.format("%s returns status 404 (not found)", url));
+
+        return json;
     }
 
 
@@ -44,9 +49,13 @@ public class ApiDataGrabber {
         if (isCached(gameLink))
             return (Game) getCachedIdentifiable(gameLink);
 
-        Game newGame = JsonReader.createGame(fetchJson(gameLink), fetchJson(gameLink + "/categories"));
-        CACHED_IDENTIFIABLES.add(newGame);
-        return newGame;
+        try {
+            Game newGame = JsonReader.createGame(fetchJson(gameLink), fetchJson(gameLink + "/categories"));
+            CACHED_IDENTIFIABLES.add(newGame);
+            return newGame;
+        } catch (FileNotFoundException error404) {
+            throw new FileNotFoundException(String.format("%s returns status 404 (not found)", gameLink));
+        }
     }
 
     public static List<Category> getListOfCategories(Game game) throws IOException {

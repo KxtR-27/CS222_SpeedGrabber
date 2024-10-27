@@ -1,14 +1,24 @@
 package speedgrabber.application;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import speedgrabber.ApiDataGrabber;
+import speedgrabber.SGUtils;
 import speedgrabber.records.Category;
 import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
 import speedgrabber.records.Run;
 
 import javax.naming.NameNotFoundException;
+import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 @SuppressWarnings({"unused"})
@@ -44,6 +54,9 @@ public class SpeedGrabberController {
             for (Category category : categories)
                 categoryDropdown.getItems().add(category);
         }
+        catch (FileNotFoundException e) {
+            showErrorDialog(new FileNotFoundException(gameSearchField.getText()));
+        }
         catch (Exception e) {
             showErrorDialog(e);
         }
@@ -74,13 +87,37 @@ public class SpeedGrabberController {
     private void showErrorDialog(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         String exceptionName = e.getClass().getSimpleName();
-        String exceptionDetails = e.getMessage();
+        String exceptionDetails = String.format(
+                "Whoops! We couldn't find the game \"%s\"%nPress 'Search' to look for it online.",
+                e.getMessage()
+        );
+        ObservableList<ButtonType> buttonTypes = alert.getButtonTypes();
 
         e.printStackTrace(System.err);
+
+        if (e instanceof FileNotFoundException) {
+            buttonTypes.add(new ButtonType("Search", ButtonBar.ButtonData.HELP));
+        }
 
         alert.setTitle("Error");
         alert.setHeaderText(exceptionName);
         alert.setContentText(exceptionDetails);
         alert.showAndWait();
+
+        try {
+            if (alert.getResult().equals(buttonTypes.get(1)))
+                openLink(URI.create(String.format(
+                        "https://www.speedrun.com/search?q=%s",
+                        SGUtils.encodeForSearchResults(e.getMessage())
+                )));
+        } catch (IOException uriError) {
+            showErrorDialog(new IOException("There was a problem opening the link."));
+        }
+    }
+
+    private void openLink(URI uri) throws IOException {
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().browse(uri);
+        }
     }
 }

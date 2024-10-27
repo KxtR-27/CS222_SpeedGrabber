@@ -88,4 +88,13 @@ public class SGUtilsTest {
         Assertions.assertEquals(expectedTime, actualTime);
     }
 
+    @Test
+    public void test_encodeForSearchResults() {
+        String toEncode = "Star Fetchers";
+
+        String expectedEncoded = "Star+Fetchers";
+        String actualEncoded = SGUtils.encodeForSearchResults(toEncode);
+
+        Assertions.assertEquals(expectedEncoded, actualEncoded);
+    }
 }

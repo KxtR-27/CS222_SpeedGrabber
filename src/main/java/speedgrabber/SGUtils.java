@@ -61,4 +61,13 @@ public class SGUtils {
 
         return LocalTime.of(hours, minutes, (int) seconds, milliseconds * 1000000);
     }
+
+    public static String encodeForSearchResults(String toEncode) {
+        StringBuilder encodedBuilder = new StringBuilder(toEncode);
+        for (int i = 0; i < encodedBuilder.length(); i++)
+            if (encodedBuilder.charAt(i) == ' ')
+                encodedBuilder.replace(i, i+1, "+");
+
+        return encodedBuilder.toString();
+    }
 }

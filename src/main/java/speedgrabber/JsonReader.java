@@ -2,6 +2,7 @@ package speedgrabber;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import speedgrabber.records.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class JsonReader {
     private static void loadJsonDocument(String json) {
         currentJsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(json);
     }
+
     private static void cleanupEscapedList(List<String> escapedList) {
         for (String escapedString : escapedList) {
             while (escapedString.contains("\"")) {
@@ -42,7 +44,6 @@ public class JsonReader {
         return JsonPath.read(currentJsonDocument, String.format("$.%s", key));
     }
 
-
     public static Game createGame(String gameJson, String categoriesJson) {
         loadJsonDocument(categoriesJson);
         List<String> categoryLinks = indefiniteScan("links[0].uri");
@@ -57,7 +58,6 @@ public class JsonReader {
                 categoryLinks
         );
     }
-
     public static Category createCategory(String categoryJson) {
         loadJsonDocument(categoryJson);
         String type = definiteScan("data.type");
@@ -94,7 +94,6 @@ public class JsonReader {
 
         return null;
     }
-
     public static Leaderboard createLeaderboard(String leaderboardJson, int maxRuns) {
         loadJsonDocument(leaderboardJson);
 
@@ -119,7 +118,6 @@ public class JsonReader {
 
         return new Leaderboard(webLink, gameLink, categoryLink, timing, runLinks, runPlaces);
     }
-
     public static Run createRun(String runJson, int place) {
         loadJsonDocument(runJson);
         return new Run(
@@ -138,4 +136,12 @@ public class JsonReader {
         );
     }
 
+    public static boolean jsonContains404Error(String json) {
+        loadJsonDocument(json);
+        try {
+            if (scanInt("status") == 404)
+                return true;
+        } catch (PathNotFoundException ignored) {}
+        return false;
+    }
 }

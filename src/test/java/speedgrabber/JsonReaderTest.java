@@ -23,6 +23,7 @@ public class JsonReaderTest {
         categoryPerLevelJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-individualworld-category.json"), StandardCharsets.UTF_8);
         leaderboardJson = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-leaderboard.json"), StandardCharsets.UTF_8);
         run1Json = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/sms-anypercent-run1.json"), StandardCharsets.UTF_8);
+        error404Json = IOUtils.toString(new FileInputStream("src/test/resources/speedgrabber/404-not-found.json"), StandardCharsets.UTF_8);
    }
     static String gameJson;
     static String categoryListJson;
@@ -30,6 +31,7 @@ public class JsonReaderTest {
     static String categoryPerLevelJson;
     static String leaderboardJson;
     static String run1Json;
+    static String error404Json;
 
     @Test
     public void test_createGame() {
@@ -139,5 +141,11 @@ public class JsonReaderTest {
         Run actualRun = JsonReader.createRun(run1Json, 1);
 
         Assertions.assertEquals(expectedRun, actualRun);
+    }
+
+    @Test
+    public void test_jsonContains404Error() {
+        Assertions.assertTrue(JsonReader.jsonContains404Error(error404Json));
+        Assertions.assertFalse(JsonReader.jsonContains404Error(gameJson));
     }
 }
