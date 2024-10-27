@@ -55,6 +55,7 @@ public class JsonReaderTest {
                 "https://www.speedrun.com/sms",
                 "https://www.speedrun.com/api/v1/games/v1pxjz68",
                 "v1pxjz68",
+                "sms",
                 "Super Mario Sunshine",
 
                 expectedCategoryLinks

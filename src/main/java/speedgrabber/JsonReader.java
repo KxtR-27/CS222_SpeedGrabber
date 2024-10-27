@@ -53,6 +53,7 @@ public class JsonReader {
                 definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
                 definiteScan("data.id"),
+                definiteScan("data.abbreviation"),
                 definiteScan("data.names.international"),
 
                 categoryLinks

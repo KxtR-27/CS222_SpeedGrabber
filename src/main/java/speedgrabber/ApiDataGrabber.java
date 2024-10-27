@@ -12,31 +12,47 @@ import java.util.*;
 
 public class ApiDataGrabber {
     private static final List<Identifiable> CACHED_IDENTIFIABLES = new ArrayList<>();
+    private static final boolean ENABLE_CACHE_LOG = false;
 
     private static boolean isCached(String identity) {
         boolean isCached = false;
 
-        for (Identifiable identifiable : CACHED_IDENTIFIABLES)
-            if (identifiable.identify().equals(identity))
+        for (Identifiable identifiable : CACHED_IDENTIFIABLES) {
+            if (identifiable.identify().equals(identity)) {
                 isCached = true;
+            }
+            else if (identifiable instanceof Game) {
+                if (identifiable.identify().contains(identity))
+                    isCached = true;
+            }
+        }
 
-        System.out.printf("[?] Checked for cached identifiable with identity [%s] | [%b]%n", identity, isCached);
+        printCacheLog(String.format("[?] Checked for cached identifiable with identity [%s] | [%b]%n", identity, isCached));
         return isCached;
     }
     private static void addToCache(Identifiable identifiable) {
         CACHED_IDENTIFIABLES.add(identifiable);
-        System.out.printf("[+] Added to cache Identifiable (%s) with Identity [\"%s\"]%n", identifiable.getClass().getSimpleName(), identifiable.identify());
+        printCacheLog(String.format("[+] Added to cache Identifiable (%s) with Identity [\"%s\"]%n", identifiable.getClass().getSimpleName(), identifiable.identify()));
     }
     private static Identifiable getCachedIdentifiable(String identity) {
-        for (Identifiable identifiable : CACHED_IDENTIFIABLES)
+        for (Identifiable identifiable : CACHED_IDENTIFIABLES) {
             if (identifiable.identify().equals(identity)) {
-                System.out.printf("[*] Fetched Identifiable (%s) [%s] from cache.%n", identifiable.getClass().getSimpleName(), identity);
+                printCacheLog(String.format("[*] Fetched Identifiable (%s) [%s] from cache.%n", identifiable.getClass().getSimpleName(), identity));
                 return identifiable;
             }
+            else if (identifiable instanceof Game) {
+                if (identifiable.identify().contains(identity)) {
+                    printCacheLog(String.format("[*] Fetched Identifiable **Game** [%s] from cache using (%s).%n", identifiable.identify(), identity));
+                    return identifiable;
+                }
+            }
+        }
 
         System.out.printf("[!] Tried to fetch Identifiable with identity [%s], but found null.%n", identity);
         return null;
     }
+
+    private static void printCacheLog(String message) {if (ENABLE_CACHE_LOG) System.out.println(message);}
 
     private static String fetchJson(String url) throws IOException {
         URL dataUrl = URI.create(url).toURL();
@@ -56,8 +72,8 @@ public class ApiDataGrabber {
         gameTitle = URLEncoder.encode(gameTitle, StandardCharsets.UTF_8);
         String gameLink = String.format("https://www.speedrun.com/api/v1/games/%s", gameTitle);
 
-        if (isCached(gameLink))
-            return (Game) getCachedIdentifiable(gameLink);
+        if (isCached(gameTitle))
+            return (Game) getCachedIdentifiable(gameTitle);
 
         try {
             Game newGame = JsonReader.createGame(fetchJson(gameLink), fetchJson(gameLink + "/categories"));

@@ -15,13 +15,14 @@ public class ApiDataGrabberTest {
                 "weblink",
                 "selflink",
                 "id",
+                "abbreviation",
                 "name",
 
                 new ArrayList<>()
         ));
 
-        Assertions.assertTrue(ApiDataGrabber.test_isCached("selflink"));
-        Assertions.assertFalse(ApiDataGrabber.test_isCached("otherlink"));
+        Assertions.assertTrue(ApiDataGrabber.test_isCached("id+abbreviation"));
+        Assertions.assertFalse(ApiDataGrabber.test_isCached("otherid+otherabbreviation"));
     }
 
     @Test
@@ -30,12 +31,13 @@ public class ApiDataGrabberTest {
                 "weblink",
                 "selflink",
                 "id",
+                "abbreviation",
                 "name",
 
                 new ArrayList<>()
         );
         ApiDataGrabber.test_addToCache(expectedIdentifiable);
-        Identifiable actualIdentifiable = ApiDataGrabber.test_getCachedIdentifiable("selflink");
+        Identifiable actualIdentifiable = ApiDataGrabber.test_getCachedIdentifiable("id");
 
         Assertions.assertEquals(expectedIdentifiable, actualIdentifiable);
 

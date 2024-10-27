@@ -16,12 +16,13 @@ public class IdentifiableTest {
                 "weblink",
                 "selflink",
                 "id",
+                "abbreviation",
                 "name",
 
                 new ArrayList<>()
         );
 
-        String expectedIdentity = "selflink";
+        String expectedIdentity = "id+abbreviation";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);
