@@ -98,7 +98,10 @@ public class SpeedGrabberController {
 
             List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, (int) maxRunsSlider.getValue());
 
-            StringBuilder leaderboardBuilder = new StringBuilder();
+            StringBuilder leaderboardBuilder = new StringBuilder(String.format(
+                    "%-3s %-25s %-25s %s%n",
+                    "#", "Player", "Time", "Date"
+            ));
             for (int i = 0; i < maxRunsSlider.getValue() && i < leaderboardRuns.size(); i++)
                 leaderboardBuilder.append(String.format("%s%n", leaderboardRuns.get(i)));
 
