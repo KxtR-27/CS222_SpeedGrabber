@@ -1,7 +1,7 @@
 package speedgrabber.records;
 
 public record Category(
-        String webLink,
+        String weblink,
         String selfLink,
         String id,
         String name,

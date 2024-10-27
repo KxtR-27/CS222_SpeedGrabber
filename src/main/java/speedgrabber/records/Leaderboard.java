@@ -3,7 +3,7 @@ package speedgrabber.records;
 import java.util.ArrayList;
 
 public record Leaderboard(
-        String webLink,
+        String weblink,
 
         String categoryLink,
         String levelLink,

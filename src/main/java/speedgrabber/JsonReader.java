@@ -63,7 +63,7 @@ public class JsonReader {
 
         loadJsonDocument(gameJson);
         return new Game(
-                definiteScan("data.webLink"),
+                definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
                 definiteScan("data.id"),
                 definiteScan("data.abbreviation"),
@@ -76,7 +76,7 @@ public class JsonReader {
     public static Level createLevel(String levelJson) {
         loadJsonDocument(levelJson);
         return new Level(
-                definiteScan("data.webLink"),
+                definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
                 definiteScan("data.id"),
                 definiteScan("data.name"),
@@ -91,7 +91,7 @@ public class JsonReader {
         switch (type) {
             case "per-game" -> {
                 return new Category(
-                        definiteScan("data.webLink"),
+                        definiteScan("data.weblink"),
                         definiteScan("data.links[0].uri"),
                         definiteScan("data.id"),
                         definiteScan("data.name"),
@@ -104,7 +104,7 @@ public class JsonReader {
             }
             case "per-level" -> {
                 return new Category(
-                        definiteScan("data.webLink"),
+                        definiteScan("data.weblink"),
                         definiteScan("data.links[0].uri"),
                         definiteScan("data.id"),
                         definiteScan("data.name"),
@@ -122,7 +122,7 @@ public class JsonReader {
     public static Leaderboard createLeaderboard(String leaderboardJson, int maxRuns) {
         loadJsonDocument(leaderboardJson);
 
-        String webLink = definiteScan("data.webLink");
+        String webLink = definiteScan("data.weblink");
 
         String categoryLink = definiteScan("data.links[1].uri");
         String levelLink = (pathExists("data.links[2].uri")) ?
@@ -145,7 +145,7 @@ public class JsonReader {
     public static Run createRun(String runJson, int place) {
         loadJsonDocument(runJson);
         return new Run(
-                definiteScan("data.webLink"),
+                definiteScan("data.weblink"),
                 definiteScan("data.links[0].uri"),
                 definiteScan("data.id"),
 

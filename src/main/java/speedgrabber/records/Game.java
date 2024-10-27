@@ -3,7 +3,7 @@ package speedgrabber.records;
 import java.util.List;
 
 public record Game(
-        String webLink,
+        String weblink,
         String selfLink,
         String id,
         String abbreviation,

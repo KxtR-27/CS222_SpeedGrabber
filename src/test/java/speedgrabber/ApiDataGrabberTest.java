@@ -12,8 +12,8 @@ public class ApiDataGrabberTest {
     @Test
     public void test_test_isCached() {
         ApiDataGrabber.test_addToCache(new Game(
-                "webLink",
-                "selfLink",
+                "weblink",
+                "selflink",
                 "id",
                 "abbreviation",
                 "name",
@@ -29,8 +29,8 @@ public class ApiDataGrabberTest {
     @Test
     public void test_test_getCachedIdentifiable() {
         Identifiable expectedIdentifiable = new Game(
-                "webLink",
-                "selfLink",
+                "weblink",
+                "selflink",
                 "id",
                 "abbreviation",
                 "name",

@@ -1,8 +1,8 @@
 package speedgrabber.records;
 
 public record Level(
-        String webLink,
-        String selfLink,
+        String weblink,
+        String selflink,
         String id,
         String name,
 
@@ -11,7 +11,7 @@ public record Level(
 ) implements Identifiable {
     @Override
     public String identify() {
-        return selfLink;
+        return selflink;
     }
 
     @Override

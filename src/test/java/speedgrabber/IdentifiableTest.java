@@ -13,8 +13,8 @@ public class IdentifiableTest {
     @Test
     public void test_identify_game() {
         Identifiable identifiable = new Game(
-                "webLink",
-                "selfLink",
+                "weblink",
+                "selflink",
                 "id",
                 "abbreviation",
                 "name",
@@ -32,15 +32,15 @@ public class IdentifiableTest {
     @Test
     public void test_identify_level() {
         Identifiable identifiable = new Level(
-                "webLink",
-                "selfLink",
+                "weblink",
+                "selflink",
                 "id",
                 "name",
 
                 "gameLink"
         );
 
-        String expectedIdentity = "selfLink";
+        String expectedIdentity = "selflink";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);
@@ -49,8 +49,8 @@ public class IdentifiableTest {
     @Test
     public void test_identify_category() {
         Identifiable identifiable = new Category(
-                "webLink",
-                "selfLink",
+                "weblink",
+                "selflink",
                 "id",
                 "name",
 
@@ -60,7 +60,7 @@ public class IdentifiableTest {
                 "type"
         );
 
-        String expectedIdentity = "selfLink";
+        String expectedIdentity = "selflink";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);
@@ -69,7 +69,7 @@ public class IdentifiableTest {
     @Test
     public void test_identify_leaderboard_perGame() {
         Identifiable identifiable = new Leaderboard(
-                "webLink",
+                "weblink",
 
                 "categorylink/category",
                 null,
@@ -89,7 +89,7 @@ public class IdentifiableTest {
     @Test
     public void test_identify_leaderboard_perLevel() {
         Identifiable identifiable = new Leaderboard(
-                "webLink",
+                "weblink",
 
                 "categorylink/category",
                 "levellink/level",
@@ -110,8 +110,8 @@ public class IdentifiableTest {
     @Test
     public void test_identify_run() {
         Identifiable identifiable = new Run(
-                "webLink",
-                "selfLink",
+                "weblink",
+                "selflink",
                 "id",
 
                 new ArrayList<>(),
@@ -124,7 +124,7 @@ public class IdentifiableTest {
                 LocalTime.of(1,1)
         );
 
-        String expectedIdentity = "selfLink";
+        String expectedIdentity = "selflink";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);
