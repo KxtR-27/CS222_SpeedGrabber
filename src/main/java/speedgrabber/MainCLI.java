@@ -7,6 +7,7 @@ import speedgrabber.records.Run;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,6 +45,9 @@ public class MainCLI {
                     "Whoops! There is no game with ID \"%s\".%nYou can try searching online at %s%s",
                     gameNameInput, "https://www.speedrun.com/search?q=", SGUtils.encodeForSearchResults(gameNameInput)
             ));
+        }
+        catch (UnknownHostException internetError) {
+            throw new UnknownHostException("A network error occurred. Please check your internet connection");
         }
 
         consoleScanner.close();

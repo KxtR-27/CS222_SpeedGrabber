@@ -19,6 +19,7 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.List;
 
 @SuppressWarnings({"unused"})
@@ -54,6 +55,9 @@ public class SpeedGrabberController {
             for (Category category : categories)
                 categoryDropdown.getItems().add(category);
         }
+        catch (UnknownHostException e) {
+            showErrorDialog(new UnknownHostException("A network error occurred. Please check your internet connection"));
+        }
         catch (FileNotFoundException e) {
             showErrorDialog(new FileNotFoundException(gameSearchField.getText()));
         }
@@ -87,16 +91,14 @@ public class SpeedGrabberController {
     private void showErrorDialog(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         String exceptionName = e.getClass().getSimpleName();
-        String exceptionDetails = String.format(
-                "Whoops! We couldn't find the game \"%s\"%nPress 'Search' to look for it online.",
-                e.getMessage()
-        );
+        String exceptionDetails = e.getMessage();
         ObservableList<ButtonType> buttonTypes = alert.getButtonTypes();
 
         e.printStackTrace(System.err);
 
         if (e instanceof FileNotFoundException) {
             buttonTypes.add(new ButtonType("Search", ButtonBar.ButtonData.HELP));
+            exceptionDetails = String.format("Whoops! We couldn't find a game by the slug \"%s\". Press 'Search' to look for it online.", e.getMessage());
         }
 
         alert.setTitle("Error");
@@ -104,14 +106,15 @@ public class SpeedGrabberController {
         alert.setContentText(exceptionDetails);
         alert.showAndWait();
 
-        try {
-            if (alert.getResult().equals(buttonTypes.get(1)))
+        if (alert.getResult().equals(buttonTypes.get(1))) {
+            try {
                 openLink(URI.create(String.format(
                         "https://www.speedrun.com/search?q=%s",
                         SGUtils.encodeForSearchResults(e.getMessage())
                 )));
-        } catch (IOException uriError) {
-            showErrorDialog(new IOException("There was a problem opening the link."));
+            } catch (IOException uriError) {
+                showErrorDialog(new IOException("There was a problem opening the link."));
+            }
         }
     }
 
