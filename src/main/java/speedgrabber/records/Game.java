@@ -4,13 +4,13 @@ import java.util.List;
 
 public record Game(
         String weblink,
-        String selfLink,
+        String selflink,
         String id,
         String abbreviation,
         String name,
 
-        List<String> categoryLinks,
-        List<String> levelLinks
+        List<String> categorylinks,
+        List<String> levellinks
 
 ) implements Identifiable {
     @Override

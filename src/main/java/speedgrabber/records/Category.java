@@ -2,12 +2,12 @@ package speedgrabber.records;
 
 public record Category(
         String weblink,
-        String selfLink,
+        String selflink,
         String id,
         String name,
 
-        String leaderboardLink,
-        String gameLink,
+        String leaderboardlink,
+        String gamelink,
 
         String type
 
@@ -19,11 +19,11 @@ public record Category(
 
     @Override
     public String identify() {
-        return selfLink;
+        return selflink;
     }
 
     public String gameID() {
-        String[] toReturn = gameLink.split("/");
+        String[] toReturn = gamelink.split("/");
         return toReturn[toReturn.length - 1];
     }
 }

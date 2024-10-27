@@ -166,14 +166,14 @@ public class JsonReader {
         for (int i = 0; i < maxRuns && i < leaderboard.numOfRunsInJson(); i++) {
             try {
                 //noinspection unused - triggerOutOfBounds is vestigial
-                String triggerOutOfBounds = leaderboard.runLinks().get(i);
+                String triggerOutOfBounds = leaderboard.runlinks().get(i);
             }
             catch (IndexOutOfBoundsException e) {
-                leaderboard.runLinks().add(String.format(
+                leaderboard.runlinks().add(String.format(
                         "https://www.speedrun.com/api/v1/runs/%s",
                         definiteScan(String.format("data.runs[%d].run.id", i))
                 ));
-                leaderboard.runPlaces().add(scanInt(String.format("data.runs[%d].place", i)));
+                leaderboard.runplaces().add(scanInt(String.format("data.runs[%d].place", i)));
             }
         }
 

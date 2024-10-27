@@ -234,10 +234,10 @@ public class JsonReaderTest {
         Leaderboard actualLeaderboard = JsonReader.createLeaderboard(leaderboardPerGameJson, 3);
         Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
 
-        expectedLeaderboard.runLinks().add(String.format("https://www.speedrun.com/api/v1/runs/%s", "mrxlrdgm"));
-        expectedLeaderboard.runLinks().add(String.format("https://www.speedrun.com/api/v1/runs/%s", "m7oo6n4y"));
-        expectedLeaderboard.runPlaces().add(4);
-        expectedLeaderboard.runPlaces().add(5);
+        expectedLeaderboard.runlinks().add(String.format("https://www.speedrun.com/api/v1/runs/%s", "mrxlrdgm"));
+        expectedLeaderboard.runlinks().add(String.format("https://www.speedrun.com/api/v1/runs/%s", "m7oo6n4y"));
+        expectedLeaderboard.runplaces().add(4);
+        expectedLeaderboard.runplaces().add(5);
 
         JsonReader.populateLeaderboard(actualLeaderboard, 5, leaderboardPerGameJson);
         Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);

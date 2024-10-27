@@ -37,7 +37,7 @@ public class IdentifiableTest {
                 "id",
                 "name",
 
-                "gameLink"
+                "gamelink"
         );
 
         String expectedIdentity = "selflink";

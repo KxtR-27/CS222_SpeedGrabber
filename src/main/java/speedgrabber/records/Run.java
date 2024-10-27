@@ -6,13 +6,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 public record Run(
-        String webLink,
-        String selfLink,
+        String weblink,
+        String selflink,
         String id,
 
-        List<String> playerLinks,
-        String categoryLink,
-        String gameLink,
+        List<String> playerlinks,
+        String categorylink,
+        String gamelink,
 
         int place,
         LocalDate dateOfRun,
@@ -21,5 +21,5 @@ public record Run(
 
 ) implements Identifiable {
     @Override
-    public String identify() {return selfLink;}
+    public String identify() {return selflink;}
 }

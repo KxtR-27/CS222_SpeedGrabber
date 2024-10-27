@@ -90,7 +90,7 @@ public class ApiDataGrabber {
 
     public static List<Level> getListOfLevels(Game game) throws IOException {
         List<Level> toReturn = new ArrayList<>();
-        for (String levelLink : game.levelLinks())
+        for (String levelLink : game.levellinks())
             toReturn.add(getLevel(levelLink));
 
         return toReturn;
@@ -106,7 +106,7 @@ public class ApiDataGrabber {
 
     public static List<Category> getListOfCategories(Game game) throws IOException {
         List<Category> toReturn = new ArrayList<>();
-        for (String categoryLink : game.categoryLinks())
+        for (String categoryLink : game.categorylinks())
             toReturn.add(getCategory(categoryLink));
 
         return toReturn;
@@ -125,7 +125,7 @@ public class ApiDataGrabber {
 
         if (isCached(leaderboardLink)) {
             toReturn = (Leaderboard) getCachedIdentifiable(leaderboardLink);
-            if (toReturn != null && toReturn.runLinks().size() < maxRuns)
+            if (toReturn != null && toReturn.runlinks().size() < maxRuns)
                 JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(leaderboardLink));
         }
         else {
@@ -136,7 +136,7 @@ public class ApiDataGrabber {
         return toReturn;
     }
     public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
-        return getLeaderboard(category.leaderboardLink(), maxRuns);
+        return getLeaderboard(category.leaderboardlink(), maxRuns);
     }
     public static Leaderboard getLeaderboard(Level level, Category category, int maxRuns) throws IOException {
         return getLeaderboard(String.format(
@@ -151,8 +151,8 @@ public class ApiDataGrabber {
         int i;
         for (i = 0; i < leaderboard.numOfRunsInJson() && i < maxRuns; i++) {
             toReturn.add(getRun(
-                    leaderboard.runLinks().get(i),
-                    leaderboard.runPlaces().get(i)
+                    leaderboard.runlinks().get(i),
+                    leaderboard.runplaces().get(i)
             ));
         }
         if (i < maxRuns - 1)

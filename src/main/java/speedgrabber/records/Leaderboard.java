@@ -5,23 +5,23 @@ import java.util.ArrayList;
 public record Leaderboard(
         String weblink,
 
-        String categoryLink,
-        String levelLink,
-        String gameLink,
+        String categorylink,
+        String levellink,
+        String gamelink,
 
         String timing,
         int numOfRunsInJson,
-        ArrayList<String> runLinks,
-        ArrayList<Integer> runPlaces
+        ArrayList<String> runlinks,
+        ArrayList<Integer> runplaces
 
 ) implements Identifiable {
     @Override
     public String identify() {
-        String categoryID = categoryLink.split("/")[categoryLink.split("/").length - 1];
-        String gameID = gameLink.split("/")[gameLink.split("/").length - 1];
+        String categoryID = categorylink.split("/")[categorylink.split("/").length - 1];
+        String gameID = gamelink.split("/")[gamelink.split("/").length - 1];
 
-        if (levelLink != null) {
-            String levelID = levelLink.split("/")[levelLink.split("/").length - 1];
+        if (levellink != null) {
+            String levelID = levellink.split("/")[levellink.split("/").length - 1];
             return "https://www.speedrun.com/api/v1/leaderboards/" + gameID + "/level/" + levelID + "/" + categoryID;
         }
 

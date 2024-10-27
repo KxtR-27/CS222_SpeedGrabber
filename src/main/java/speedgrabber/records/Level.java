@@ -6,7 +6,7 @@ public record Level(
         String id,
         String name,
 
-        String gameLink
+        String gamelink
 
 ) implements Identifiable {
     @Override
