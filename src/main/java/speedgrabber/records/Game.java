@@ -9,7 +9,8 @@ public record Game(
         String abbreviation,
         String name,
 
-        List<String> categoryLinks
+        List<String> categoryLinks,
+        List<String> levelLinks
 
 ) implements Identifiable {
     @Override

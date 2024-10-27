@@ -76,12 +76,32 @@ public class ApiDataGrabber {
             return (Game) getCachedIdentifiable(gameTitle);
 
         try {
-            Game newGame = JsonReader.createGame(fetchJson(gameLink), fetchJson(gameLink + "/categories"));
+            Game newGame = JsonReader.createGame(
+                    fetchJson(gameLink),
+                    fetchJson(gameLink + "/categories"),
+                    fetchJson(gameLink + "/levels")
+            );
             addToCache(newGame);
             return newGame;
         } catch (FileNotFoundException error404) {
             throw new FileNotFoundException(String.format("%s returns status 404 (not found)", gameLink));
         }
+    }
+
+    public static List<Level> getListOfLevels(Game game) throws IOException {
+        List<Level> toReturn = new ArrayList<>();
+        for (String levelLink : game.levelLinks())
+            toReturn.add(getLevel(levelLink));
+
+        return toReturn;
+    }
+    public static Level getLevel(String levelLink) throws IOException {
+        if (isCached(levelLink))
+            return (Level) getCachedIdentifiable(levelLink);
+
+        Level newLevel = JsonReader.createLevel(fetchJson(levelLink));
+        addToCache(newLevel);
+        return newLevel;
     }
 
     public static List<Category> getListOfCategories(Game game) throws IOException {
@@ -100,20 +120,29 @@ public class ApiDataGrabber {
         return newCategory;
     }
 
-    public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
+    private static Leaderboard getLeaderboard(String leaderboardLink, int maxRuns) throws IOException {
         Leaderboard toReturn;
 
-        if (isCached(category.leaderboardLink())) {
-            toReturn = (Leaderboard) getCachedIdentifiable(category.leaderboardLink());
+        if (isCached(leaderboardLink)) {
+            toReturn = (Leaderboard) getCachedIdentifiable(leaderboardLink);
             if (toReturn != null && toReturn.runLinks().size() < maxRuns)
-                JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(category.leaderboardLink()));
+                JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(leaderboardLink));
         }
         else {
-            toReturn = JsonReader.createLeaderboard(fetchJson(category.leaderboardLink()), maxRuns);
+            toReturn = JsonReader.createLeaderboard(fetchJson(leaderboardLink), maxRuns);
             addToCache(toReturn);
         }
 
         return toReturn;
+    }
+    public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
+        return getLeaderboard(category.leaderboardLink(), maxRuns);
+    }
+    public static Leaderboard getLeaderboard(Level level, Category category, int maxRuns) throws IOException {
+        return getLeaderboard(String.format(
+                "https://www.speedrun.com/api/v1/leaderboards/%s/level/%s/%s",
+                category.gameID(), level.id(), category.id()
+        ), maxRuns);
     }
 
     public static List<Run> getListOfRuns(Leaderboard leaderboard, int maxRuns) throws IOException {

@@ -18,6 +18,7 @@ public class ApiDataGrabberTest {
                 "abbreviation",
                 "name",
 
+                new ArrayList<>(),
                 new ArrayList<>()
         ));
 
@@ -34,6 +35,7 @@ public class ApiDataGrabberTest {
                 "abbreviation",
                 "name",
 
+                new ArrayList<>(),
                 new ArrayList<>()
         );
         ApiDataGrabber.test_addToCache(expectedIdentifiable);

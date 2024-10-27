@@ -28,15 +28,25 @@ public class JsonReader {
         }
     }
 
-    // This method is designed to be generic.
-    // In the future, it will have more uses.
+    // These methods are designed to be generic.
+    // In the future, they will have more uses.
     // Then, the "SameParameterValue" warning will cease to exist.
     @SuppressWarnings("SameParameterValue")
+    private static boolean pathExists(String key) {
+        try {
+            definiteScan(key);
+            return true;
+        }
+        catch (PathNotFoundException e) {
+            return false;
+        }
+    }
     private static List<String> indefiniteScan(String key) {
         List<String> indefiniteResults = JsonPath.read(currentJsonDocument, String.format("$..%s", key));
         cleanupEscapedList(indefiniteResults);
         return indefiniteResults;
     }
+
     private static String definiteScan(String keyPath) {
         return JsonPath.read(currentJsonDocument, String.format("$.%s", keyPath));
     }
@@ -44,9 +54,12 @@ public class JsonReader {
         return JsonPath.read(currentJsonDocument, String.format("$.%s", key));
     }
 
-    public static Game createGame(String gameJson, String categoriesJson) {
+    public static Game createGame(String gameJson, String categoriesJson, String levelsJson) {
         loadJsonDocument(categoriesJson);
         List<String> categoryLinks = indefiniteScan("links[0].uri");
+
+        loadJsonDocument(levelsJson);
+        List<String> levelLinks = indefiniteScan("links[0].uri");
 
         loadJsonDocument(gameJson);
         return new Game(
@@ -56,7 +69,19 @@ public class JsonReader {
                 definiteScan("data.abbreviation"),
                 definiteScan("data.names.international"),
 
-                categoryLinks
+                categoryLinks,
+                levelLinks
+        );
+    }
+    public static Level createLevel(String levelJson) {
+        loadJsonDocument(levelJson);
+        return new Level(
+                definiteScan("data.weblink"),
+                definiteScan("data.links[0].uri"),
+                definiteScan("data.id"),
+                definiteScan("data.name"),
+
+                definiteScan("data.links[1].uri")
         );
     }
     public static Category createCategory(String categoryJson) {
@@ -84,7 +109,6 @@ public class JsonReader {
                         definiteScan("data.id"),
                         definiteScan("data.name"),
 
-                        // Apparently, per-level categories have no leaderboard--only records.
                         null,
                         definiteScan("data.links[1].uri"),
 
@@ -101,6 +125,8 @@ public class JsonReader {
         String webLink = definiteScan("data.weblink");
 
         String categoryLink = definiteScan("data.links[1].uri");
+        String levelLink = (pathExists("data.links[2].uri")) ?
+                (definiteScan("data.links[2].uri")) : null;
         String gameLink = definiteScan("data.links[0].uri");
 
         String timing = definiteScan("data.timing");
@@ -109,7 +135,7 @@ public class JsonReader {
         ArrayList<Integer> runPlaces = new ArrayList<>();
 
         Leaderboard leaderboard = new Leaderboard(
-                webLink, categoryLink, gameLink, timing, numOfRunsInJson, runLinks, runPlaces
+                webLink, categoryLink, levelLink, gameLink, timing, numOfRunsInJson, runLinks, runPlaces
         );
 
         populateLeaderboard(leaderboard, maxRuns, leaderboardJson);

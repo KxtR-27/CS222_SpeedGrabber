@@ -1,0 +1,508 @@
+{
+  "data": [
+    {
+      "id": "xd4e80wm",
+      "name": "Bianco Hills",
+      "weblink": "https://www.speedrun.com/sms/Bianco_Hills",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=xd4e80wm"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/xd4e80wm/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "nwlzepdv",
+      "name": "Bianco Hills Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Bianco_Hills_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/nwlzepdv"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/nwlzepdv/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/nwlzepdv/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/nwlzepdv/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=nwlzepdv"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/nwlzepdv/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "xd0no09q",
+      "name": "Ricco Harbor",
+      "weblink": "https://www.speedrun.com/sms/Ricco_Harbor",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd0no09q"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd0no09q/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd0no09q/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/xd0no09q/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=xd0no09q"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/xd0no09q/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "rw6gyn97",
+      "name": "Ricco Harbor Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Ricco_Harbor_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/rw6gyn97"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/rw6gyn97/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/rw6gyn97/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/rw6gyn97/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=rw6gyn97"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/rw6gyn97/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "n93l3790",
+      "name": "Gelato Beach",
+      "weblink": "https://www.speedrun.com/sms/Gelato_Beach",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/n93l3790"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/n93l3790/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/n93l3790/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/n93l3790/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=n93l3790"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/n93l3790/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "z985l79l",
+      "name": "Gelato Beach Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Gelato_Beach_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/z985l79l"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/z985l79l/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/z985l79l/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/z985l79l/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=z985l79l"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/z985l79l/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "rdnxgnwm",
+      "name": "Pinna Park",
+      "weblink": "https://www.speedrun.com/sms/Pinna_Park",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdnxgnwm"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdnxgnwm/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdnxgnwm/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdnxgnwm/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=rdnxgnwm"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/rdnxgnwm/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "ldyk0jw3",
+      "name": "Pinna Park Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Pinna_Park_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/ldyk0jw3"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/ldyk0jw3/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/ldyk0jw3/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/ldyk0jw3/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=ldyk0jw3"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/ldyk0jw3/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "ywe3pq9l",
+      "name": "Sirena Beach",
+      "weblink": "https://www.speedrun.com/sms/Sirena_Beach",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/ywe3pq9l"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/ywe3pq9l/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/ywe3pq9l/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/ywe3pq9l/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=ywe3pq9l"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/ywe3pq9l/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "69z606d1",
+      "name": "Sirena Beach Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Sirena_Beach_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/69z606d1"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/69z606d1/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/69z606d1/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/69z606d1/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=69z606d1"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/69z606d1/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "r9gn8qd2",
+      "name": "Noki Bay",
+      "weblink": "https://www.speedrun.com/sms/Noki_Bay",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/r9gn8qd2"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/r9gn8qd2/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/r9gn8qd2/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/r9gn8qd2/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=r9gn8qd2"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/r9gn8qd2/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "o9xo069l",
+      "name": "Noki Bay Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Noki_Bay_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/o9xo069l"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/o9xo069l/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/o9xo069l/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/o9xo069l/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=o9xo069l"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/o9xo069l/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "495zn29p",
+      "name": "Pianta Village",
+      "weblink": "https://www.speedrun.com/sms/Pianta_Village",
+      "rules": null,
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/495zn29p"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/495zn29p/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/495zn29p/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/495zn29p/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=495zn29p"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/495zn29p/xd1r95wk"
+        }
+      ]
+    },
+    {
+      "id": "rdqoqmwx",
+      "name": "Pianta Village Hoverless",
+      "weblink": "https://www.speedrun.com/sms/Pianta_Village_Hoverless",
+      "rules": "- Hover Nozzle is banned.",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdqoqmwx"
+        },
+        {
+          "rel": "game",
+          "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+        },
+        {
+          "rel": "categories",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdqoqmwx/categories"
+        },
+        {
+          "rel": "variables",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdqoqmwx/variables"
+        },
+        {
+          "rel": "records",
+          "uri": "https://www.speedrun.com/api/v1/levels/rdqoqmwx/records"
+        },
+        {
+          "rel": "runs",
+          "uri": "https://www.speedrun.com/api/v1/runs?level=rdqoqmwx"
+        },
+        {
+          "rel": "leaderboard",
+          "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/rdqoqmwx/xd1r95wk"
+        }
+      ]
+    }
+  ]
+}

@@ -3,19 +3,12 @@ package speedgrabber.application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import speedgrabber.ApiDataGrabber;
 import speedgrabber.SGUtils;
-import speedgrabber.records.Category;
-import speedgrabber.records.Game;
-import speedgrabber.records.Leaderboard;
-import speedgrabber.records.Run;
+import speedgrabber.records.*;
 
 import javax.naming.NameNotFoundException;
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -24,16 +17,28 @@ import java.util.List;
 
 @SuppressWarnings({"unused"})
 public class SpeedGrabberController {
+    Game activeGame;
+    List<Level> activeLevels;
+    List<Category> activeCategories;
 
     @FXML
     private Label gameLabel;
     @FXML
+    private ChoiceBox<Category> categoryDropdown;
+    @FXML
+    private ChoiceBox<Level> levelDropdown;
+    @FXML
+    private CheckBox showLevelsCheckbox;
+    @FXML
+    private Button leaderboardButton;
+
+    @FXML
     private TextField gameSearchField;
     @FXML
     private Button gameSearchButton;
-
     @FXML
-    private ChoiceBox<Category> categoryDropdown;
+    private Button clearAllButton;
+
     @FXML
     private Slider maxRunsSlider;
 
@@ -46,17 +51,22 @@ public class SpeedGrabberController {
             if (gameSearchField.getText().isEmpty())
                 throw new NameNotFoundException("Please enter a game abbreviation or ID.");
 
+            levelDropdown.getItems().clear();
             categoryDropdown.getItems().clear();
 
             leaderboardArea.setText("");
             gameSearchField.setDisable(true);
 
-            Game game = ApiDataGrabber.getGame(gameSearchField.getText());
-            gameLabel.setText(String.format("Game found: %s", game.name()));
+            activeGame = ApiDataGrabber.getGame(gameSearchField.getText());
+            activeLevels = ApiDataGrabber.getListOfLevels(activeGame);
+            activeCategories = ApiDataGrabber.getListOfCategories(activeGame);
 
-            List<Category> categories = ApiDataGrabber.getListOfCategories(game);
-            for (Category category : categories)
-                categoryDropdown.getItems().add(category);
+            levelDropdown.getItems().clear();
+            for (Level level : activeLevels)
+                levelDropdown.getItems().add(level);
+
+            gameLabel.setText(String.format("Game found:%n%s", activeGame.name()));
+            checkLevels();
         }
         catch (UnknownHostException e) {
             showErrorDialog(new UnknownHostException("A network error occurred. Please check your internet connection"));
@@ -72,12 +82,20 @@ public class SpeedGrabberController {
             gameSearchField.setDisable(false);
         }
     }
-    public void showCategoryLeaderboard() {
+    public void showLeaderboard() {
         try {
+            if (levelDropdown.getValue() == null && showLevelsCheckbox.isSelected())
+                throw new NullPointerException("Level dropdown is empty. Please select a category first.");
             if (categoryDropdown.getValue() == null)
                 throw new NullPointerException("Category dropdown is empty. Please select a category first.");
 
-            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
+            Leaderboard leaderboard;
+
+            if (showLevelsCheckbox.isSelected())
+                leaderboard = ApiDataGrabber.getLeaderboard(levelDropdown.getValue(), categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
+            else
+                leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
+
             List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, (int) maxRunsSlider.getValue());
 
             StringBuilder leaderboardBuilder = new StringBuilder();
@@ -89,6 +107,40 @@ public class SpeedGrabberController {
         catch (Exception e) {
             showErrorDialog(e);
         }
+    }
+
+    public void checkLevels() {
+        if (showLevelsCheckbox.isSelected()) {
+            levelDropdown.setDisable(false);
+
+            categoryDropdown.getItems().clear();
+            for (Category category : activeCategories)
+                if (category.type().equals("per-level"))
+                    categoryDropdown.getItems().add(category);
+        }
+        else {
+            levelDropdown.setDisable(true);
+
+            categoryDropdown.getItems().clear();
+            for (Category category : activeCategories)
+                if (category.type().equals("per-game"))
+                    categoryDropdown.getItems().add(category);
+        }
+    }
+
+    public void clearAllFields() {
+        activeGame = null;
+        activeLevels = List.of();
+        activeCategories = List.of();
+
+        gameLabel.setText(String.format("%nNo Game Active"));
+        gameSearchField.setText("");
+
+        levelDropdown.getItems().clear();
+        categoryDropdown.getItems().clear();
+        maxRunsSlider.setValue(0);
+
+        leaderboardArea.setText("");
     }
 
     // Utility Methods

@@ -19,10 +19,28 @@ public class IdentifiableTest {
                 "abbreviation",
                 "name",
 
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 
         String expectedIdentity = "id+abbreviation";
+        String actualIdentity = identifiable.identify();
+
+        Assertions.assertEquals(expectedIdentity, actualIdentity);
+    }
+
+    @Test
+    public void test_identify_level() {
+        Identifiable identifiable = new Level(
+                "weblink",
+                "selflink",
+                "id",
+                "name",
+
+                "gameLink"
+        );
+
+        String expectedIdentity = "selflink";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);
@@ -49,11 +67,12 @@ public class IdentifiableTest {
     }
 
     @Test
-    public void test_identify_leaderboard() {
+    public void test_identify_leaderboard_perGame() {
         Identifiable identifiable = new Leaderboard(
                 "weblink",
 
                 "categorylink/category",
+                null,
                 "gamelink/game",
 
                 "timing",
@@ -63,6 +82,26 @@ public class IdentifiableTest {
         );
 
         String expectedIdentity = "https://www.speedrun.com/api/v1/leaderboards/game/category/category";
+        String actualIdentity = identifiable.identify();
+
+        Assertions.assertEquals(expectedIdentity, actualIdentity);
+    }
+    @Test
+    public void test_identify_leaderboard_perLevel() {
+        Identifiable identifiable = new Leaderboard(
+                "weblink",
+
+                "categorylink/category",
+                "levellink/level",
+                "gamelink/game",
+
+                "timing",
+                0,
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        String expectedIdentity = "https://www.speedrun.com/api/v1/leaderboards/game/level/level/category";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);

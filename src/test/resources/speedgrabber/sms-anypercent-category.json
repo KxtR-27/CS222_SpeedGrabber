@@ -1,1 +1,40 @@
-{"data":{"id":"n2y3r8do","name":"Any%","weblink":"https://www.speedrun.com/sms#Any","type":"per-game","rules":"","players":{"type":"exactly","value":1},"miscellaneous":false,"links":[{"rel":"self","uri":"https://www.speedrun.com/api/v1/categories/n2y3r8do"},{"rel":"game","uri":"https://www.speedrun.com/api/v1/games/v1pxjz68"},{"rel":"variables","uri":"https://www.speedrun.com/api/v1/categories/n2y3r8do/variables"},{"rel":"records","uri":"https://www.speedrun.com/api/v1/categories/n2y3r8do/records"},{"rel":"runs","uri":"https://www.speedrun.com/api/v1/runs?category=n2y3r8do"},{"rel":"leaderboard","uri":"https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/n2y3r8do"}]}}
+{
+  "data": {
+    "id": "n2y3r8do",
+    "name": "Any%",
+    "weblink": "https://www.speedrun.com/sms#Any",
+    "type": "per-game",
+    "rules": "",
+    "players": {
+      "type": "exactly",
+      "value": 1
+    },
+    "miscellaneous": false,
+    "links": [
+      {
+        "rel": "self",
+        "uri": "https://www.speedrun.com/api/v1/categories/n2y3r8do"
+      },
+      {
+        "rel": "game",
+        "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+      },
+      {
+        "rel": "variables",
+        "uri": "https://www.speedrun.com/api/v1/categories/n2y3r8do/variables"
+      },
+      {
+        "rel": "records",
+        "uri": "https://www.speedrun.com/api/v1/categories/n2y3r8do/records"
+      },
+      {
+        "rel": "runs",
+        "uri": "https://www.speedrun.com/api/v1/runs?category=n2y3r8do"
+      },
+      {
+        "rel": "leaderboard",
+        "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/category/n2y3r8do"
+      }
+    ]
+  }
+}

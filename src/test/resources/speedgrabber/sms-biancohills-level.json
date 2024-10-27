@@ -1,0 +1,38 @@
+{
+  "data": {
+    "id": "xd4e80wm",
+    "name": "Bianco Hills",
+    "weblink": "https://www.speedrun.com/sms/Bianco_Hills",
+    "rules": null,
+    "links": [
+      {
+        "rel": "self",
+        "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm"
+      },
+      {
+        "rel": "game",
+        "uri": "https://www.speedrun.com/api/v1/games/v1pxjz68"
+      },
+      {
+        "rel": "categories",
+        "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm/categories"
+      },
+      {
+        "rel": "variables",
+        "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm/variables"
+      },
+      {
+        "rel": "records",
+        "uri": "https://www.speedrun.com/api/v1/levels/xd4e80wm/records"
+      },
+      {
+        "rel": "runs",
+        "uri": "https://www.speedrun.com/api/v1/runs?level=xd4e80wm"
+      },
+      {
+        "rel": "leaderboard",
+        "uri": "https://www.speedrun.com/api/v1/leaderboards/v1pxjz68/level/xd4e80wm/xd1r95wk"
+      }
+    ]
+  }
+}

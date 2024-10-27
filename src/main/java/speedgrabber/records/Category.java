@@ -14,11 +14,16 @@ public record Category(
 ) implements Identifiable {
     @Override
     public String toString() {
-        return name;
+        return (this.type.equals("per-level") ? (name + "*") : name);
     }
 
     @Override
     public String identify() {
         return selfLink;
+    }
+
+    public String gameID() {
+        String[] toReturn = gameLink.split("/");
+        return toReturn[toReturn.length - 1];
     }
 }
