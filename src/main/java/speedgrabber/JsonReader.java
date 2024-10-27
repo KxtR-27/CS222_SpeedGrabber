@@ -99,24 +99,21 @@ public class JsonReader {
 
         String webLink = definiteScan("data.weblink");
 
-        String gameLink = definiteScan("data.links[0].uri");
         String categoryLink = definiteScan("data.links[1].uri");
+        String gameLink = definiteScan("data.links[0].uri");
 
         String timing = definiteScan("data.timing");
-        List<String> runLinks = new ArrayList<>();
-        List<Integer> runPlaces = new ArrayList<>();
+        int numOfRunsInJson = scanInt("data.runs.length()");
+        ArrayList<String> runLinks = new ArrayList<>();
+        ArrayList<Integer> runPlaces = new ArrayList<>();
 
-        for (int i = 0; i < maxRuns && i < scanInt("data.runs.length()"); i++) {
-            runLinks.add(String.format(
-                    "https://www.speedrun.com/api/v1/runs/%s",
-                    definiteScan(String.format("data.runs[%d].run.id", i))
-            ));
-            runPlaces.add(
-                    scanInt(String.format("data.runs[%d].place", i))
-            );
-        }
+        Leaderboard leaderboard = new Leaderboard(
+                webLink, categoryLink, gameLink, timing, numOfRunsInJson, runLinks, runPlaces
+        );
 
-        return new Leaderboard(webLink, gameLink, categoryLink, timing, runLinks, runPlaces);
+        populateLeaderboard(leaderboard, maxRuns, leaderboardJson);
+
+        return leaderboard;
     }
     public static Run createRun(String runJson, int place) {
         loadJsonDocument(runJson);
@@ -134,6 +131,25 @@ public class JsonReader {
                 SGUtils.asLocalDateTime(definiteScan("data.submitted")),
                 SGUtils.asLocalTime(definiteScan("data.times.primary"))
         );
+    }
+
+    public static void populateLeaderboard(Leaderboard leaderboard, int maxRuns, String leaderboardJson) {
+        loadJsonDocument(leaderboardJson);
+
+        for (int i = 0; i < maxRuns && i < leaderboard.numOfRunsInJson(); i++) {
+            try {
+                //noinspection unused - triggerOutOfBounds is vestigial
+                String triggerOutOfBounds = leaderboard.runLinks().get(i);
+            }
+            catch (IndexOutOfBoundsException e) {
+                leaderboard.runLinks().add(String.format(
+                        "https://www.speedrun.com/api/v1/runs/%s",
+                        definiteScan(String.format("data.runs[%d].run.id", i))
+                ));
+                leaderboard.runPlaces().add(scanInt(String.format("data.runs[%d].place", i)));
+            }
+        }
+
     }
 
     public static boolean jsonContains404Error(String json) {

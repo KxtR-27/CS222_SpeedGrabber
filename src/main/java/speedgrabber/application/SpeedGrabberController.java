@@ -34,10 +34,13 @@ public class SpeedGrabberController {
 
     @FXML
     private ChoiceBox<Category> categoryDropdown;
+    @FXML
+    private Slider maxRunsSlider;
 
     @FXML
     private TextArea leaderboardArea;
 
+    // Button/Event Actions
     public void searchGame() {
         try {
             if (gameSearchField.getText().isEmpty())
@@ -74,12 +77,12 @@ public class SpeedGrabberController {
             if (categoryDropdown.getValue() == null)
                 throw new NullPointerException("Category dropdown is empty. Please select a category first.");
 
-            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), 20);
-            List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard);
+            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
+            List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, (int) maxRunsSlider.getValue());
 
             StringBuilder leaderboardBuilder = new StringBuilder();
-            for (Run run : leaderboardRuns)
-                leaderboardBuilder.append(String.format("%s%n", run));
+            for (int i = 0; i < maxRunsSlider.getValue() && i < leaderboardRuns.size(); i++)
+                leaderboardBuilder.append(String.format("%s%n", leaderboardRuns.get(i)));
 
             leaderboardArea.setText(leaderboardBuilder.toString());
         }
@@ -88,6 +91,7 @@ public class SpeedGrabberController {
         }
     }
 
+    // Utility Methods
     private void showErrorDialog(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         String exceptionName = e.getClass().getSimpleName();
@@ -106,7 +110,7 @@ public class SpeedGrabberController {
         alert.setContentText(exceptionDetails);
         alert.showAndWait();
 
-        if (alert.getResult().equals(buttonTypes.get(1))) {
+        if (e instanceof FileNotFoundException && alert.getResult().equals(buttonTypes.get(1))) {
             try {
                 openLink(URI.create(String.format(
                         "https://www.speedrun.com/search?q=%s",
@@ -117,7 +121,6 @@ public class SpeedGrabberController {
             }
         }
     }
-
     private void openLink(URI uri) throws IOException {
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(uri);

@@ -12,6 +12,8 @@ import speedgrabber.records.Run;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JsonReaderTest {
@@ -61,7 +63,6 @@ public class JsonReaderTest {
 
         Assertions.assertEquals(expectedGame, actualGame);
     }
-
     @Test
     public void test_createCategory_perGame() {
         Category expectedCategory = new Category(
@@ -95,25 +96,23 @@ public class JsonReaderTest {
 
         Assertions.assertEquals(expectedCategory, actualCategory);
     }
-
     @Test
     public void test_createLeaderboard() {
-        List<String> expectedRunLinks = List.of(
+        ArrayList<String> expectedRunLinks = new ArrayList<>(Arrays.asList(
                 "https://www.speedrun.com/api/v1/runs/mrx0238m",
                 "https://www.speedrun.com/api/v1/runs/megl1l9y",
                 "https://www.speedrun.com/api/v1/runs/yoxx36dy"
-        );
-        List<Integer> expectedRunPlaces = List.of(
-                1, 2, 3
-        );
+        ));
+        ArrayList<Integer> expectedRunPlaces = new ArrayList<>(Arrays.asList(1, 2, 3));
 
         Leaderboard expectedLeaderboard = new Leaderboard(
                 "https://www.speedrun.com/sms#Any",
 
-                "https://www.speedrun.com/api/v1/games/v1pxjz68",
                 "https://www.speedrun.com/api/v1/categories/n2y3r8do",
+                "https://www.speedrun.com/api/v1/games/v1pxjz68",
 
                 "realtime",
+                20,
                 expectedRunLinks,
                 expectedRunPlaces
         );
@@ -121,7 +120,6 @@ public class JsonReaderTest {
 
         Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
     }
-
     @Test
     public void test_createRun() {
         Run expectedRun = new Run(
@@ -141,6 +139,39 @@ public class JsonReaderTest {
         Run actualRun = JsonReader.createRun(run1Json, 1);
 
         Assertions.assertEquals(expectedRun, actualRun);
+    }
+
+    @Test
+    public void test_populateLeaderboard() {
+        //noinspection ExtractMethodRecommender
+        ArrayList<String> expectedRunLinks = new ArrayList<>(Arrays.asList(
+                String.format("https://www.speedrun.com/api/v1/runs/%s", "mrx0238m"),
+                String.format("https://www.speedrun.com/api/v1/runs/%s", "megl1l9y"),
+                String.format("https://www.speedrun.com/api/v1/runs/%s", "yoxx36dy")
+        ));
+        ArrayList<Integer> expectedRunPlaces = new ArrayList<>(Arrays.asList(1, 2, 3));
+
+        Leaderboard expectedLeaderboard = new Leaderboard(
+                "https://www.speedrun.com/sms#Any",
+
+                "https://www.speedrun.com/api/v1/categories/n2y3r8do",
+                "https://www.speedrun.com/api/v1/games/v1pxjz68",
+
+                "realtime",
+                20,
+                expectedRunLinks,
+                expectedRunPlaces
+        );
+        Leaderboard actualLeaderboard = JsonReader.createLeaderboard(leaderboardJson, 3);
+        Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
+
+        expectedLeaderboard.runLinks().add(String.format("https://www.speedrun.com/api/v1/runs/%s", "mrxlrdgm"));
+        expectedLeaderboard.runLinks().add(String.format("https://www.speedrun.com/api/v1/runs/%s", "m7oo6n4y"));
+        expectedLeaderboard.runPlaces().add(4);
+        expectedLeaderboard.runPlaces().add(5);
+
+        JsonReader.populateLeaderboard(actualLeaderboard, 5, leaderboardJson);
+        Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
     }
 
     @Test

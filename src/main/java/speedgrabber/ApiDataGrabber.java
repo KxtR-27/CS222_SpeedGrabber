@@ -14,17 +14,27 @@ public class ApiDataGrabber {
     private static final List<Identifiable> CACHED_IDENTIFIABLES = new ArrayList<>();
 
     private static boolean isCached(String identity) {
+        boolean isCached = false;
+
         for (Identifiable identifiable : CACHED_IDENTIFIABLES)
             if (identifiable.identify().equals(identity))
-                return true;
+                isCached = true;
 
-        return false;
+        System.out.printf("[?] Checked for cached identifiable with identity [%s] | [%b]%n", identity, isCached);
+        return isCached;
+    }
+    private static void addToCache(Identifiable identifiable) {
+        CACHED_IDENTIFIABLES.add(identifiable);
+        System.out.printf("[+] Added to cache Identifiable (%s) with Identity [\"%s\"]%n", identifiable.getClass().getSimpleName(), identifiable.identify());
     }
     private static Identifiable getCachedIdentifiable(String identity) {
         for (Identifiable identifiable : CACHED_IDENTIFIABLES)
-            if (identifiable.identify().equals(identity))
+            if (identifiable.identify().equals(identity)) {
+                System.out.printf("[*] Fetched Identifiable (%s) [%s] from cache.%n", identifiable.getClass().getSimpleName(), identity);
                 return identifiable;
+            }
 
+        System.out.printf("[!] Tried to fetch Identifiable with identity [%s], but found null.%n", identity);
         return null;
     }
 
@@ -51,7 +61,7 @@ public class ApiDataGrabber {
 
         try {
             Game newGame = JsonReader.createGame(fetchJson(gameLink), fetchJson(gameLink + "/categories"));
-            CACHED_IDENTIFIABLES.add(newGame);
+            addToCache(newGame);
             return newGame;
         } catch (FileNotFoundException error404) {
             throw new FileNotFoundException(String.format("%s returns status 404 (not found)", gameLink));
@@ -70,27 +80,38 @@ public class ApiDataGrabber {
             return (Category) getCachedIdentifiable(categoryLink);
 
         Category newCategory = JsonReader.createCategory(fetchJson(categoryLink));
-        CACHED_IDENTIFIABLES.add(newCategory);
+        addToCache(newCategory);
         return newCategory;
     }
 
     public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
-        if (isCached(category.leaderboardLink()))
-            return (Leaderboard) getCachedIdentifiable(category.leaderboardLink());
+        Leaderboard toReturn;
 
-        Leaderboard newLeaderboard = JsonReader.createLeaderboard(fetchJson(category.leaderboardLink()), maxRuns);
-        CACHED_IDENTIFIABLES.add(newLeaderboard);
-        return newLeaderboard;
+        if (isCached(category.leaderboardLink())) {
+            toReturn = (Leaderboard) getCachedIdentifiable(category.leaderboardLink());
+            if (toReturn != null && toReturn.runLinks().size() < maxRuns)
+                JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(category.leaderboardLink()));
+        }
+        else {
+            toReturn = JsonReader.createLeaderboard(fetchJson(category.leaderboardLink()), maxRuns);
+            addToCache(toReturn);
+        }
+
+        return toReturn;
     }
 
-    public static List<Run> getListOfRuns(Leaderboard leaderboard) throws IOException {
+    public static List<Run> getListOfRuns(Leaderboard leaderboard, int maxRuns) throws IOException {
         List<Run> toReturn = new ArrayList<>();
-        for (int i = 0; i < leaderboard.runLinks().size(); i++) {
+
+        int i;
+        for (i = 0; i < leaderboard.numOfRunsInJson() && i < maxRuns; i++) {
             toReturn.add(getRun(
                     leaderboard.runLinks().get(i),
                     leaderboard.runPlaces().get(i)
             ));
         }
+        if (i < maxRuns - 1)
+            JsonReader.populateLeaderboard(leaderboard, maxRuns, leaderboard.identify());
 
         return toReturn;
     }
@@ -99,13 +120,13 @@ public class ApiDataGrabber {
             return (Run) getCachedIdentifiable(runLink);
 
         Run newRun = JsonReader.createRun(fetchJson(runLink), place);
-        CACHED_IDENTIFIABLES.add(newRun);
+        addToCache(newRun);
         return newRun;
     }
 
 
     static void test_addToCache(Identifiable identifiable) {
-        CACHED_IDENTIFIABLES.add(identifiable);
+        addToCache(identifiable);
     }
     static boolean test_isCached(String identity) {
         return isCached(identity);

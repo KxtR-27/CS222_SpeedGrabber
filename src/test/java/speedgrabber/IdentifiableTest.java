@@ -52,15 +52,16 @@ public class IdentifiableTest {
         Identifiable identifiable = new Leaderboard(
                 "weblink",
 
-                "categorylink/a",
-                "gamelink/b",
+                "categorylink/category",
+                "gamelink/game",
 
                 "timing",
+                0,
                 new ArrayList<>(),
                 new ArrayList<>()
         );
 
-        String expectedIdentity = "https://www.speedrun.com/api/v1/leaderboards/b/category/a";
+        String expectedIdentity = "https://www.speedrun.com/api/v1/leaderboards/game/category/category";
         String actualIdentity = identifiable.identify();
 
         Assertions.assertEquals(expectedIdentity, actualIdentity);
