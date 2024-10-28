@@ -9,7 +9,7 @@
       <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <Label fx:id="gameLabel" text="No Game Active" textAlignment="CENTER">
             <VBox.margin>
-               <Insets bottom="4.0" top="20.0" />
+               <Insets bottom="8.0" top="20.0" />
             </VBox.margin>
          </Label>
          <ChoiceBox fx:id="levelDropdown" disable="true" prefWidth="150.0">

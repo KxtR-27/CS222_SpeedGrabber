@@ -85,7 +85,7 @@ public class SpeedGrabberController {
     public void showLeaderboard() {
         try {
             if (levelDropdown.getValue() == null && showLevelsCheckbox.isSelected())
-                throw new NullPointerException("Level dropdown is empty. Please select a category first.");
+                throw new NullPointerException("Level dropdown is empty. Please select a level first.");
             if (categoryDropdown.getValue() == null)
                 throw new NullPointerException("Category dropdown is empty. Please select a category first.");
 
