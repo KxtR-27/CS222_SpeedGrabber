@@ -25,7 +25,7 @@
                <Insets bottom="2.0" />
             </VBox.margin>
          </ChoiceBox>
-         <CheckBox fx:id="levelsCheckbox" mnemonicParsing="false" onAction="#checkLevels" text="Show Levels">
+         <CheckBox fx:id="levelsCheckbox" mnemonicParsing="false" onAction="#checkCategoryType" text="Show Levels">
             <padding>
                <Insets top="1.0" />
             </padding>

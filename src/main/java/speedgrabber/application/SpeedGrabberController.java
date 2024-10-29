@@ -3,6 +3,7 @@ package speedgrabber.application;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import speedgrabber.ApiDataGrabber;
+import speedgrabber.SGUtils;
 import speedgrabber.records.*;
 import speedgrabber.records.interfaces.Player;
 
@@ -43,11 +44,14 @@ public class SpeedGrabberController {
 
     // Button/Event Actions
     public void searchGame() {
+        String encodedSlug = SGUtils.encodeSlug(gameSearchField.getText());
+
         try {
             if (gameSearchField.getText().isEmpty())
                 throw new NullPointerException("Please enter a game abbreviation or ID.");
 
-            activeGame = ApiDataGrabber.getGame(gameSearchField.getText());
+
+            activeGame = ApiDataGrabber.getGame(encodedSlug);
             gameLabel.setText(activeGame.name());
             leaderboardArea.clear();
 
@@ -65,13 +69,13 @@ public class SpeedGrabberController {
 
             gameSearchField.setDisable(false);
 
-            checkLevels();
+            checkCategoryType();
         }
         catch (UnknownHostException e) {
             AppAlerts.showGenericError(new UnknownHostException("A network error occurred. Please check your internet connection"));
         }
         catch (FileNotFoundException e) {
-            AppAlerts.showSearchError(new FileNotFoundException(gameSearchField.getText()));
+            AppAlerts.showSearchError(new FileNotFoundException(encodedSlug));
         }
         catch (Exception e) {
             AppAlerts.showGenericError(e);
@@ -81,7 +85,7 @@ public class SpeedGrabberController {
             gameSearchField.setDisable(false);
         }
     }
-    public void checkLevels() {
+    public void checkCategoryType() {
         categoryDropdown.getItems().clear();
         levelDropdown.setDisable(!levelsCheckbox.isSelected());
 

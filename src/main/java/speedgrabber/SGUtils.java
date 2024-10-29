@@ -66,4 +66,8 @@ public class SGUtils {
     public static String grabEndOfSplit(String toSplit, String splitter) {
         return toSplit.split(splitter)[toSplit.split(splitter).length - 1];
     }
+
+    public static String encodeSlug(String slug) {
+        return slug.replace(' ', '+');
+    }
 }

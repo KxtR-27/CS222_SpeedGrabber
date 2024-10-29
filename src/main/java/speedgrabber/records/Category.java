@@ -1,6 +1,5 @@
 package speedgrabber.records;
 
-import speedgrabber.SGUtils;
 import speedgrabber.records.interfaces.Identifiable;
 
 public record Category(
@@ -23,9 +22,5 @@ public record Category(
     @Override
     public String identify() {
         return selflink;
-    }
-
-    public String gameID() {
-        return SGUtils.grabEndOfSplit(gamelink, "/");
     }
 }

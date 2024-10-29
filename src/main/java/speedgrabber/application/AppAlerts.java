@@ -32,6 +32,7 @@ class AppAlerts {
         ObservableList<ButtonType> buttonTypes = searchAlert.getButtonTypes();
 
         buttonTypes.add(new ButtonType("Search", ButtonBar.ButtonData.HELP));
+        searchAlert.setHeaderText("No game found :(");
         searchAlert.setContentText(String.format("Whoops! We couldn't find a game by the slug \"%s\". Press 'Search' to look for it online.", e.getMessage()));
 
         searchAlert.showAndWait();
