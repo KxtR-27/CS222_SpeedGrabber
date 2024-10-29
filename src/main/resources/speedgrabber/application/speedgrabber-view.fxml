@@ -30,7 +30,7 @@
                <Insets top="1.0" />
             </padding>
          </CheckBox>
-         <Button fx:id="leaderboardButton" mnemonicParsing="false" onAction="#showLeaderboard" prefHeight="26.0" prefWidth="150.0" text="Show Leaderboard">
+         <Button fx:id="leaderboardButton" mnemonicParsing="false" onAction="#searchLeaderboard" prefHeight="26.0" prefWidth="150.0" text="Show Leaderboard">
             <VBox.margin>
                <Insets top="10.0" />
             </VBox.margin>

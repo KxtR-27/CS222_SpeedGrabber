@@ -1,18 +1,13 @@
 package speedgrabber.application;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.ocpsoft.prettytime.PrettyTime;
 import speedgrabber.ApiDataGrabber;
 import speedgrabber.records.*;
 import speedgrabber.records.interfaces.Player;
 
 import javax.naming.NameNotFoundException;
-import java.awt.Desktop;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -70,67 +65,19 @@ public class SpeedGrabberController {
             checkLevels();
         }
         catch (UnknownHostException e) {
-            showErrorDialog(new UnknownHostException("A network error occurred. Please check your internet connection"));
+            AppAlerts.showGenericError(new UnknownHostException("A network error occurred. Please check your internet connection"));
         }
         catch (FileNotFoundException e) {
-            showErrorDialog(new FileNotFoundException(gameSearchField.getText()));
+            AppAlerts.showSearchError(new FileNotFoundException(gameSearchField.getText()));
         }
         catch (Exception e) {
-            showErrorDialog(e);
+            AppAlerts.showGenericError(e);
         }
         finally {
             gameSearchField.setText("");
             gameSearchField.setDisable(false);
         }
     }
-    public void showLeaderboard() {
-        try {
-            if (levelDropdown.getValue() == null && showLevelsCheckbox.isSelected())
-                throw new NullPointerException("Level dropdown is empty. Please select a level first.");
-            if (categoryDropdown.getValue() == null)
-                throw new NullPointerException("Category dropdown is empty. Please select a category first.");
-
-            Leaderboard leaderboard;
-
-            if (showLevelsCheckbox.isSelected())
-                leaderboard = ApiDataGrabber.getLeaderboard(levelDropdown.getValue(), categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
-            else
-                leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
-
-            List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, (int) maxRunsSlider.getValue());
-            List<Player[]> leaderboardPlayers = ApiDataGrabber.getPlayersInRuns(leaderboard, (int) maxRunsSlider.getValue());
-
-            StringBuilder leaderboardBuilder = new StringBuilder(String.format(
-                    "%-3s %-25s %-25s %s%n",
-                    "#", "Player", "Time", "Date"
-            ));
-            for (int i = 0; i < maxRunsSlider.getValue() && i < leaderboardRuns.size(); i++) {
-                Run currentRun = leaderboardRuns.get(i);
-
-                Player[] currentPlayers = leaderboardPlayers.get(i);
-                String playersDisplay = "";
-                if (currentPlayers.length == 1)
-                    playersDisplay = currentPlayers[0].playername();
-                if (currentPlayers.length >= 2)
-                    playersDisplay += "*";
-
-
-                leaderboardBuilder.append(String.format(
-                        "%-3s %-25s %-25s %s%n",
-                        currentRun.place(),
-                        playersDisplay,
-                        currentRun.primaryTime(),
-                        new PrettyTime().format(currentRun.dateOfRun())
-                ));
-            }
-
-            leaderboardArea.setText(leaderboardBuilder.toString());
-        }
-        catch (Exception e) {
-            showErrorDialog(e);
-        }
-    }
-
     public void checkLevels() {
         if (showLevelsCheckbox.isSelected()) {
             levelDropdown.setDisable(false);
@@ -150,6 +97,31 @@ public class SpeedGrabberController {
         }
     }
 
+    public void searchLeaderboard() {
+        try {
+            if (levelDropdown.getValue() == null && showLevelsCheckbox.isSelected())
+                throw new NullPointerException("Level dropdown is empty. Please select a level first.");
+            if (categoryDropdown.getValue() == null)
+                throw new NullPointerException("Category dropdown is empty. Please select a category first.");
+
+            Leaderboard leaderboard;
+            int maxRuns = (int) maxRunsSlider.getValue();
+
+            if (showLevelsCheckbox.isSelected())
+                leaderboard = ApiDataGrabber.getLeaderboard(levelDropdown.getValue(), categoryDropdown.getValue(), maxRuns);
+            else
+                leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), maxRuns);
+
+            List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, maxRuns);
+            List<Player[]> leaderboardPlayers = ApiDataGrabber.getPlayersInRuns(leaderboard, maxRuns);
+
+            leaderboardArea.setText(AppUtils.formatLeaderboard(leaderboardRuns, leaderboardPlayers, maxRuns));
+        }
+        catch (Exception e) {
+            AppAlerts.showGenericError(e);
+        }
+    }
+
     public void clearAllFields() {
         activeGame = null;
         activeLevels = List.of();
@@ -165,39 +137,4 @@ public class SpeedGrabberController {
         leaderboardArea.setText("");
     }
 
-    // Utility Methods
-    private void showErrorDialog(Exception e) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        String exceptionName = e.getClass().getSimpleName();
-        String exceptionDetails = e.getMessage();
-        ObservableList<ButtonType> buttonTypes = alert.getButtonTypes();
-
-        e.printStackTrace(System.err);
-
-        if (e instanceof FileNotFoundException) {
-            buttonTypes.add(new ButtonType("Search", ButtonBar.ButtonData.HELP));
-            exceptionDetails = String.format("Whoops! We couldn't find a game by the slug \"%s\". Press 'Search' to look for it online.", e.getMessage());
-        }
-
-        alert.setTitle("Error");
-        alert.setHeaderText(exceptionName);
-        alert.setContentText(exceptionDetails);
-        alert.showAndWait();
-
-        if (e instanceof FileNotFoundException && alert.getResult().equals(buttonTypes.get(1))) {
-            try {
-                openLink(URI.create(String.format(
-                        "https://www.speedrun.com/search?q=%s",
-                        e.getMessage()
-                )));
-            } catch (IOException uriError) {
-                showErrorDialog(new IOException("There was a problem opening the link."));
-            }
-        }
-    }
-    private void openLink(URI uri) throws IOException {
-        if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().browse(uri);
-        }
-    }
 }
