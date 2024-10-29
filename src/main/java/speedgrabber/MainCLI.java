@@ -32,7 +32,7 @@ public class MainCLI {
             System.out.print(">> ");
             int categoryIndex = Integer.parseInt(consoleScanner.nextLine()) - 1;
 
-            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryList.get(categoryIndex), 20);
+            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryList.get(categoryIndex).leaderboardlink(), 20);
             List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, 20);
 
             System.out.printf("%nLeaderboard for: %s%n%s%n", categoryList.get(categoryIndex).name(), "-".repeat(20));

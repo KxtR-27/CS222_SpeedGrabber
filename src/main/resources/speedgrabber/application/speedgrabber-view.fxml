@@ -12,7 +12,7 @@
                <Insets bottom="8.0" top="20.0" />
             </VBox.margin>
          </Label>
-         <ChoiceBox fx:id="levelDropdown" disable="true" prefWidth="150.0">
+         <ChoiceBox fx:id="levelDropdown" prefWidth="150.0">
             <VBox.margin>
                <Insets />
             </VBox.margin>
@@ -25,7 +25,7 @@
                <Insets bottom="2.0" />
             </VBox.margin>
          </ChoiceBox>
-         <CheckBox fx:id="showLevelsCheckbox" mnemonicParsing="false" onAction="#checkLevels" text="Show Levels">
+         <CheckBox fx:id="levelsCheckbox" mnemonicParsing="false" onAction="#checkLevels" text="Show Levels">
             <padding>
                <Insets top="1.0" />
             </padding>

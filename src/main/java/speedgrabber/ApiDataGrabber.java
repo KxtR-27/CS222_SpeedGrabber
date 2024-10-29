@@ -123,7 +123,7 @@ public class ApiDataGrabber {
         return newCategory;
     }
 
-    private static Leaderboard getLeaderboard(String leaderboardlink, int maxRuns) throws IOException {
+    public static Leaderboard getLeaderboard(String leaderboardlink, int maxRuns) throws IOException {
         Leaderboard toReturn;
 
         if (isCached(leaderboardlink)) {
@@ -138,16 +138,6 @@ public class ApiDataGrabber {
 
         return toReturn;
     }
-    public static Leaderboard getLeaderboard(Category category, int maxRuns) throws IOException {
-        return getLeaderboard(category.leaderboardlink(), maxRuns);
-    }
-    public static Leaderboard getLeaderboard(Level level, Category category, int maxRuns) throws IOException {
-        return getLeaderboard(String.format(
-                "https://www.speedrun.com/api/v1/leaderboards/%s/level/%s/%s",
-                category.gameID(), level.id(), category.id()
-        ), maxRuns);
-    }
-
 
     public static List<Run> getListOfRuns(Leaderboard leaderboard, int maxRuns) throws IOException {
         List<Run> toReturn = new ArrayList<>();

@@ -6,8 +6,8 @@ import speedgrabber.ApiDataGrabber;
 import speedgrabber.records.*;
 import speedgrabber.records.interfaces.Player;
 
-import javax.naming.NameNotFoundException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class SpeedGrabberController {
     @FXML
     private ChoiceBox<Level> levelDropdown;
     @FXML
-    private CheckBox showLevelsCheckbox;
+    private CheckBox levelsCheckbox;
     @FXML
     private Button leaderboardButton;
 
@@ -45,23 +45,26 @@ public class SpeedGrabberController {
     public void searchGame() {
         try {
             if (gameSearchField.getText().isEmpty())
-                throw new NameNotFoundException("Please enter a game abbreviation or ID.");
-
-            levelDropdown.getItems().clear();
-            categoryDropdown.getItems().clear();
-
-            leaderboardArea.setText("");
-            gameSearchField.setDisable(true);
+                throw new NullPointerException("Please enter a game abbreviation or ID.");
 
             activeGame = ApiDataGrabber.getGame(gameSearchField.getText());
-            activeLevels = ApiDataGrabber.getListOfLevels(activeGame);
-            activeCategories = ApiDataGrabber.getListOfCategories(activeGame);
+            gameLabel.setText(activeGame.name());
+            leaderboardArea.clear();
+
+            gameSearchField.setDisable(true);
 
             levelDropdown.getItems().clear();
+            activeLevels = ApiDataGrabber.getListOfLevels(activeGame);
             for (Level level : activeLevels)
                 levelDropdown.getItems().add(level);
+            if (!activeLevels.isEmpty())
+                levelDropdown.setValue(levelDropdown.getItems().getFirst());
 
-            gameLabel.setText(String.format("Game found:%n%s", activeGame.name()));
+            categoryDropdown.getItems().clear();
+            activeCategories = ApiDataGrabber.getListOfCategories(activeGame);
+
+            gameSearchField.setDisable(false);
+
             checkLevels();
         }
         catch (UnknownHostException e) {
@@ -79,38 +82,29 @@ public class SpeedGrabberController {
         }
     }
     public void checkLevels() {
-        if (showLevelsCheckbox.isSelected()) {
-            levelDropdown.setDisable(false);
+        categoryDropdown.getItems().clear();
+        levelDropdown.setDisable(!levelsCheckbox.isSelected());
 
-            categoryDropdown.getItems().clear();
+        if (levelsCheckbox.isSelected()) {
             for (Category category : activeCategories)
                 if (category.type().equals("per-level"))
                     categoryDropdown.getItems().add(category);
         }
         else {
-            levelDropdown.setDisable(true);
-
-            categoryDropdown.getItems().clear();
             for (Category category : activeCategories)
                 if (category.type().equals("per-game"))
                     categoryDropdown.getItems().add(category);
         }
+
+        categoryDropdown.setValue(categoryDropdown.getItems().getFirst());
     }
 
     public void searchLeaderboard() {
+        leaderboardArea.setText("");
+
         try {
-            if (levelDropdown.getValue() == null && showLevelsCheckbox.isSelected())
-                throw new NullPointerException("Level dropdown is empty. Please select a level first.");
-            if (categoryDropdown.getValue() == null)
-                throw new NullPointerException("Category dropdown is empty. Please select a category first.");
-
-            Leaderboard leaderboard;
+            Leaderboard leaderboard = getLeaderboardWithContext();
             int maxRuns = (int) maxRunsSlider.getValue();
-
-            if (showLevelsCheckbox.isSelected())
-                leaderboard = ApiDataGrabber.getLeaderboard(levelDropdown.getValue(), categoryDropdown.getValue(), maxRuns);
-            else
-                leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), maxRuns);
 
             List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, maxRuns);
             List<Player[]> leaderboardPlayers = ApiDataGrabber.getPlayersInRuns(leaderboard, maxRuns);
@@ -120,6 +114,29 @@ public class SpeedGrabberController {
         catch (Exception e) {
             AppAlerts.showGenericError(e);
         }
+    }
+    public Leaderboard getLeaderboardWithContext() throws IOException {
+        if (activeGame == null)
+            throw new NullPointerException("No game selected.");
+
+        String url = String.format("https://www.speedrun.com/api/v1/leaderboards/%s/", activeGame.id());
+
+        Level levelSelection = levelDropdown.getValue();
+        Category categorySelection = categoryDropdown.getValue();
+        int maxRuns = (int) maxRunsSlider.getValue();
+
+        boolean levelMatters = levelSelection != null && levelsCheckbox.isSelected();
+        boolean categoryMatters = categorySelection != null;
+
+        if (!categoryMatters)
+            throw new NullPointerException("Please select a category from the dropdown.");
+
+        if (levelMatters)
+            url += String.format("level/%s/%s", levelSelection.id(), categorySelection.id());
+        else
+            url += String.format("category/%s", categorySelection.id());
+
+        return ApiDataGrabber.getLeaderboard(url, maxRuns);
     }
 
     public void clearAllFields() {
