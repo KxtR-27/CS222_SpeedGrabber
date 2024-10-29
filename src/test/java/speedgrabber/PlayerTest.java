@@ -16,7 +16,7 @@ public class PlayerTest {
                 "runslink"
         );
 
-        String expectedPlayername = "guest name";
+        String expectedPlayername = "guest name*";
         String actualPlayername = player.playername();
 
         Assertions.assertEquals(expectedPlayername, actualPlayername);
@@ -47,7 +47,7 @@ public class PlayerTest {
         String expectedUserPlayername = "username";
         String actualUserPlayername = user.playername();
 
-        String expectedGuestPlayername = "guestname";
+        String expectedGuestPlayername = "guestname*";
         String actualGuestPlayername = guest.playername();
 
         Assertions.assertEquals(expectedUserPlayername, actualUserPlayername);

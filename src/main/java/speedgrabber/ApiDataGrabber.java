@@ -16,6 +16,23 @@ public class ApiDataGrabber {
     private static final List<Identifiable> CACHED_IDENTIFIABLES = new ArrayList<>();
     private static final boolean ENABLE_CACHE_LOG = false;
 
+    private static Identifiable getCachedIdentifiable(String identity) {
+        for (Identifiable identifiable : CACHED_IDENTIFIABLES) {
+            if (identifiable.identify().equals(identity)) {
+                printCacheLog(String.format("[*] Fetched Identifiable (%s) [%s] from cache.%n", identifiable.getClass().getSimpleName(), identity));
+                return identifiable;
+            }
+            else if (identifiable instanceof Game) {
+                if (identifiable.identify().contains(identity)) {
+                    printCacheLog(String.format("[*] Fetched Identifiable **Game** [%s] from cache using (%s).%n", identifiable.identify(), identity));
+                    return identifiable;
+                }
+            }
+        }
+
+        System.out.printf("[!] Tried to fetch Identifiable with identity [%s], but found null.%n", identity);
+        return null;
+    }
     private static boolean isCached(String identity) {
         boolean isCached = false;
 
@@ -35,23 +52,6 @@ public class ApiDataGrabber {
     private static void addToCache(Identifiable identifiable) {
         CACHED_IDENTIFIABLES.add(identifiable);
         printCacheLog(String.format("[+] Added to cache Identifiable (%s) with Identity [\"%s\"]%n", identifiable.getClass().getSimpleName(), identifiable.identify()));
-    }
-    private static Identifiable getCachedIdentifiable(String identity) {
-        for (Identifiable identifiable : CACHED_IDENTIFIABLES) {
-            if (identifiable.identify().equals(identity)) {
-                printCacheLog(String.format("[*] Fetched Identifiable (%s) [%s] from cache.%n", identifiable.getClass().getSimpleName(), identity));
-                return identifiable;
-            }
-            else if (identifiable instanceof Game) {
-                if (identifiable.identify().contains(identity)) {
-                    printCacheLog(String.format("[*] Fetched Identifiable **Game** [%s] from cache using (%s).%n", identifiable.identify(), identity));
-                    return identifiable;
-                }
-            }
-        }
-
-        System.out.printf("[!] Tried to fetch Identifiable with identity [%s], but found null.%n", identity);
-        return null;
     }
     private static void printCacheLog(String message) {
         if (ENABLE_CACHE_LOG) System.out.println(message);
