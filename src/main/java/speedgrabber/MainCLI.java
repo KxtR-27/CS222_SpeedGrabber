@@ -43,7 +43,7 @@ public class MainCLI {
         catch (FileNotFoundException error404) {
             throw new FileNotFoundException(String.format(
                     "Whoops! There is no game with ID \"%s\".%nYou can try searching online at %s%s",
-                    gameNameInput, "https://www.speedrun.com/search?q=", SGUtils.encodeForSearchResults(gameNameInput)
+                    gameNameInput, "https://www.speedrun.com/search?q=", gameNameInput
             ));
         }
         catch (UnknownHostException internetError) {

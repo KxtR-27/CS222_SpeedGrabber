@@ -3,6 +3,7 @@ package speedgrabber;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import speedgrabber.records.*;
+import speedgrabber.records.interfaces.Identifiable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -78,6 +79,7 @@ public class IdentifiableTest {
                 "timing",
                 0,
                 new ArrayList<>(),
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 
@@ -97,6 +99,7 @@ public class IdentifiableTest {
 
                 "timing",
                 0,
+                new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>()
         );
@@ -130,5 +133,26 @@ public class IdentifiableTest {
         Assertions.assertEquals(expectedIdentity, actualIdentity);
     }
 
+    @Test
+    public void test_identify_user() {
+        Identifiable identifiable = new User(
+                null, "selflink", null, null, null, null, null
+        );
 
+        String expectedIdentity = "selflink";
+        String actualIdentity = identifiable.identify();
+
+        Assertions.assertEquals(expectedIdentity, actualIdentity);
+    }
+    @Test
+    public void test_identify_guest() {
+        Identifiable identifiable = new Guest(
+                "selflink", null, null
+        );
+
+        String expectedIdentity = "selflink";
+        String actualIdentity = identifiable.identify();
+
+        Assertions.assertEquals(expectedIdentity, actualIdentity);
+    }
 }

@@ -1,5 +1,8 @@
 package speedgrabber.records;
 
+import speedgrabber.SGUtils;
+import speedgrabber.records.interfaces.Identifiable;
+
 public record Category(
         String weblink,
         String selflink,
@@ -23,7 +26,6 @@ public record Category(
     }
 
     public String gameID() {
-        String[] toReturn = gamelink.split("/");
-        return toReturn[toReturn.length - 1];
+        return SGUtils.grabEndOfSplit(gamelink, "/");
     }
 }

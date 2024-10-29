@@ -3,9 +3,10 @@ package speedgrabber.application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.ocpsoft.prettytime.PrettyTime;
 import speedgrabber.ApiDataGrabber;
-import speedgrabber.SGUtils;
 import speedgrabber.records.*;
+import speedgrabber.records.interfaces.Player;
 
 import javax.naming.NameNotFoundException;
 import java.awt.Desktop;
@@ -97,13 +98,31 @@ public class SpeedGrabberController {
                 leaderboard = ApiDataGrabber.getLeaderboard(categoryDropdown.getValue(), (int) maxRunsSlider.getValue());
 
             List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, (int) maxRunsSlider.getValue());
+            List<Player[]> leaderboardPlayers = ApiDataGrabber.getPlayersInRuns(leaderboard, (int) maxRunsSlider.getValue());
 
             StringBuilder leaderboardBuilder = new StringBuilder(String.format(
                     "%-3s %-25s %-25s %s%n",
                     "#", "Player", "Time", "Date"
             ));
-            for (int i = 0; i < maxRunsSlider.getValue() && i < leaderboardRuns.size(); i++)
-                leaderboardBuilder.append(String.format("%s%n", leaderboardRuns.get(i)));
+            for (int i = 0; i < maxRunsSlider.getValue() && i < leaderboardRuns.size(); i++) {
+                Run currentRun = leaderboardRuns.get(i);
+
+                Player[] currentPlayers = leaderboardPlayers.get(i);
+                String playersDisplay = "";
+                if (currentPlayers.length == 1)
+                    playersDisplay = currentPlayers[0].playername();
+                if (currentPlayers.length >= 2)
+                    playersDisplay += "*";
+
+
+                leaderboardBuilder.append(String.format(
+                        "%-3s %-25s %-25s %s%n",
+                        currentRun.place(),
+                        playersDisplay,
+                        currentRun.primaryTime(),
+                        new PrettyTime().format(currentRun.dateOfRun())
+                ));
+            }
 
             leaderboardArea.setText(leaderboardBuilder.toString());
         }
@@ -169,7 +188,7 @@ public class SpeedGrabberController {
             try {
                 openLink(URI.create(String.format(
                         "https://www.speedrun.com/search?q=%s",
-                        SGUtils.encodeForSearchResults(e.getMessage())
+                        e.getMessage()
                 )));
             } catch (IOException uriError) {
                 showErrorDialog(new IOException("There was a problem opening the link."));

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "name": "Alex",
+    "links": [
+      {
+       "rel": "self",
+        "uri": "https://www.speedrun.com/api/v1/guests/Alex"
+      },
+      {
+        "rel": "runs",
+        "uri": "https://www.speedrun.com/api/v1/runs?guest=Alex"
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 package speedgrabber.records;
 
+import speedgrabber.records.interfaces.Identifiable;
+
 public record Level(
         String weblink,
         String selflink,

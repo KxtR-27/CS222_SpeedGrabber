@@ -4,6 +4,7 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import speedgrabber.records.*;
+import speedgrabber.records.interfaces.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,11 @@ public class JsonReader {
     @SuppressWarnings("SameParameterValue")
     private static boolean pathExists(String key) {
         try {
-            definiteScan(key);
+            try {
+                definiteScan(key);
+            } catch (ClassCastException thatWasAnInteger) {
+                scanInt(key);
+            }
             return true;
         }
         catch (PathNotFoundException e) {
@@ -125,23 +130,49 @@ public class JsonReader {
         String webLink = definiteScan("data.weblink");
 
         String categoryLink = definiteScan("data.links[1].uri");
-        String levelLink = (pathExists("data.links[2].uri")) ?
-                (definiteScan("data.links[2].uri")) : null;
+        String levelLink = (pathExists("data.links[2].uri")) ? (definiteScan("data.links[2].uri")) : null;
         String gameLink = definiteScan("data.links[0].uri");
 
         String timing = definiteScan("data.timing");
         int numOfRunsInJson = scanInt("data.runs.length()");
-        ArrayList<String> runLinks = new ArrayList<>();
-        ArrayList<Integer> runPlaces = new ArrayList<>();
+        ArrayList<String> runlinks = new ArrayList<>();
+        ArrayList<Integer> runplaces = new ArrayList<>();
+        ArrayList<String[]> playerlinks = new ArrayList<>();
 
         Leaderboard leaderboard = new Leaderboard(
-                webLink, categoryLink, levelLink, gameLink, timing, numOfRunsInJson, runLinks, runPlaces
+                webLink, categoryLink, levelLink, gameLink,
+                timing, numOfRunsInJson, runlinks, runplaces, playerlinks
         );
 
         populateLeaderboard(leaderboard, maxRuns, leaderboardJson);
 
         return leaderboard;
     }
+    public static void populateLeaderboard(Leaderboard leaderboard, int maxRuns, String leaderboardJson) {
+        loadJsonDocument(leaderboardJson);
+
+        for (int i = 0; i < maxRuns && i < leaderboard.numOfRunsInJson(); i++) {
+            try {
+                //noinspection unused - triggerOutOfBounds is vestigial
+                String triggerOutOfBounds = leaderboard.runlinks().get(i);
+            }
+            catch (IndexOutOfBoundsException e) {
+                leaderboard.runlinks().add(String.format(
+                        "https://www.speedrun.com/api/v1/runs/%s",
+                        definiteScan(String.format("data.runs[%d].run.id", i))
+                ));
+                leaderboard.runplaces().add(scanInt(String.format("data.runs[%d].place", i)));
+
+                int numOfPlayersInRun = scanInt(String.format("data.runs[%d].run.players.length()", i));
+                String[] playersInRun = new String[numOfPlayersInRun];
+                for (int j = 0; j < numOfPlayersInRun; j++)
+                    playersInRun[j] = definiteScan(String.format("data.runs[%d].run.players[%d].uri", i, j));
+                leaderboard.playerlinks().add(playersInRun);
+            }
+        }
+
+    }
+
     public static Run createRun(String runJson, int place) {
         loadJsonDocument(runJson);
         return new Run(
@@ -160,31 +191,53 @@ public class JsonReader {
         );
     }
 
-    public static void populateLeaderboard(Leaderboard leaderboard, int maxRuns, String leaderboardJson) {
-        loadJsonDocument(leaderboardJson);
+    public static Player createPlayer(String playerJson) {
+        loadJsonDocument(playerJson);
+        return (pathExists("data.role")) ? createUser(playerJson) : createGuest(playerJson);
+    }
+    public static User createUser(String userJson) {
+        loadJsonDocument(userJson);
+        return new User(
+                definiteScan("data.weblink"),
+                definiteScan("data.links[0].uri"),
+                definiteScan("data.id"),
+                definiteScan("data.names.international"),
 
-        for (int i = 0; i < maxRuns && i < leaderboard.numOfRunsInJson(); i++) {
-            try {
-                //noinspection unused - triggerOutOfBounds is vestigial
-                String triggerOutOfBounds = leaderboard.runlinks().get(i);
-            }
-            catch (IndexOutOfBoundsException e) {
-                leaderboard.runlinks().add(String.format(
-                        "https://www.speedrun.com/api/v1/runs/%s",
-                        definiteScan(String.format("data.runs[%d].run.id", i))
-                ));
-                leaderboard.runplaces().add(scanInt(String.format("data.runs[%d].place", i)));
-            }
-        }
+                definiteScan("data.role"),
+                definiteScan("data.links[1].uri"),
+                definiteScan("data.links[3].uri"),
 
+                (pathExists("data.twitch.uri")) ? definiteScan("data.twitch.uri") : null,
+                (pathExists("data.hitbox.uri")) ? definiteScan("data.hitbox.uri") : null,
+                (pathExists("data.youtube.uri")) ? definiteScan("data.youtube.uri") : null,
+                (pathExists("data.twitter.uri")) ? definiteScan("data.twitter.uri") : null,
+                (pathExists("data.speedrunslive.uri")) ? definiteScan("data.speedrunslive.uri") : null
+        );
+    }
+    public static Guest createGuest(String guestJson) {
+        loadJsonDocument(guestJson);
+        return new Guest(
+                definiteScan("data.links[0].uri"),
+                definiteScan("data.name"),
+
+                definiteScan("data.links[1].uri")
+        );
     }
 
-    public static boolean jsonContains404Error(String json) {
+    public static int checkForKnownErrors(String json) {
+        if (jsonContainsError(json, 404))
+            return 404;
+        if (jsonContainsError(json, 400))
+            return 400;
+
+        return -1;
+    }
+    private static boolean jsonContainsError(String json, int status) {
         loadJsonDocument(json);
-        try {
-            if (scanInt("status") == 404)
-                return true;
-        } catch (PathNotFoundException ignored) {}
+        if (pathExists("status") && scanInt("status") == status) {
+            System.err.println("Json contains error code" + status);
+            return true;
+        }
         return false;
     }
 }

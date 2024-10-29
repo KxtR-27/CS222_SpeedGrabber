@@ -1,5 +1,7 @@
 package speedgrabber.records;
 
+import speedgrabber.records.interfaces.Identifiable;
+
 import java.util.List;
 
 public record Game(

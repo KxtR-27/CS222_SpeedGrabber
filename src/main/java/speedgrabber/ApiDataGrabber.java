@@ -2,6 +2,8 @@ package speedgrabber;
 
 import org.apache.commons.io.IOUtils;
 import speedgrabber.records.*;
+import speedgrabber.records.interfaces.Identifiable;
+import speedgrabber.records.interfaces.Player;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,8 +53,9 @@ public class ApiDataGrabber {
         System.out.printf("[!] Tried to fetch Identifiable with identity [%s], but found null.%n", identity);
         return null;
     }
-
-    private static void printCacheLog(String message) {if (ENABLE_CACHE_LOG) System.out.println(message);}
+    private static void printCacheLog(String message) {
+        if (ENABLE_CACHE_LOG) System.out.println(message);
+    }
 
     private static String fetchJson(String url) throws IOException {
         URL dataUrl = URI.create(url).toURL();
@@ -61,15 +64,15 @@ public class ApiDataGrabber {
         InputStream urlStream = connection.getInputStream();
 
         String json = IOUtils.toString(urlStream, StandardCharsets.UTF_8);
-        if (JsonReader.jsonContains404Error(json))
-            throw new FileNotFoundException(String.format("%s returns status 404 (not found)", url));
+        int errorCode = JsonReader.checkForKnownErrors(json);
+        if (errorCode != -1)
+            throw new FileNotFoundException(String.format("%s returns status %d", url, errorCode));
 
         return json;
     }
 
 
     public static Game getGame(String gameTitle) throws IOException {
-        gameTitle = URLEncoder.encode(gameTitle, StandardCharsets.UTF_8);
         String gameLink = String.format("https://www.speedrun.com/api/v1/games/%s", gameTitle);
 
         if (isCached(gameTitle))
@@ -95,11 +98,11 @@ public class ApiDataGrabber {
 
         return toReturn;
     }
-    public static Level getLevel(String levelLink) throws IOException {
-        if (isCached(levelLink))
-            return (Level) getCachedIdentifiable(levelLink);
+    public static Level getLevel(String levellink) throws IOException {
+        if (isCached(levellink))
+            return (Level) getCachedIdentifiable(levellink);
 
-        Level newLevel = JsonReader.createLevel(fetchJson(levelLink));
+        Level newLevel = JsonReader.createLevel(fetchJson(levellink));
         addToCache(newLevel);
         return newLevel;
     }
@@ -111,25 +114,25 @@ public class ApiDataGrabber {
 
         return toReturn;
     }
-    public static Category getCategory(String categoryLink) throws IOException {
-        if (isCached(categoryLink))
-            return (Category) getCachedIdentifiable(categoryLink);
+    public static Category getCategory(String categorylink) throws IOException {
+        if (isCached(categorylink))
+            return (Category) getCachedIdentifiable(categorylink);
 
-        Category newCategory = JsonReader.createCategory(fetchJson(categoryLink));
+        Category newCategory = JsonReader.createCategory(fetchJson(categorylink));
         addToCache(newCategory);
         return newCategory;
     }
 
-    private static Leaderboard getLeaderboard(String leaderboardLink, int maxRuns) throws IOException {
+    private static Leaderboard getLeaderboard(String leaderboardlink, int maxRuns) throws IOException {
         Leaderboard toReturn;
 
-        if (isCached(leaderboardLink)) {
-            toReturn = (Leaderboard) getCachedIdentifiable(leaderboardLink);
+        if (isCached(leaderboardlink)) {
+            toReturn = (Leaderboard) getCachedIdentifiable(leaderboardlink);
             if (toReturn != null && toReturn.runlinks().size() < maxRuns)
-                JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(leaderboardLink));
+                JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(leaderboardlink));
         }
         else {
-            toReturn = JsonReader.createLeaderboard(fetchJson(leaderboardLink), maxRuns);
+            toReturn = JsonReader.createLeaderboard(fetchJson(leaderboardlink), maxRuns);
             addToCache(toReturn);
         }
 
@@ -144,6 +147,7 @@ public class ApiDataGrabber {
                 category.gameID(), level.id(), category.id()
         ), maxRuns);
     }
+
 
     public static List<Run> getListOfRuns(Leaderboard leaderboard, int maxRuns) throws IOException {
         List<Run> toReturn = new ArrayList<>();
@@ -167,6 +171,35 @@ public class ApiDataGrabber {
         Run newRun = JsonReader.createRun(fetchJson(runLink), place);
         addToCache(newRun);
         return newRun;
+    }
+
+    public static List<Player[]> getPlayersInRuns(Leaderboard leaderboard, int maxRuns) throws IOException {
+        List<Player[]> toReturn = new ArrayList<>();
+
+        for (int i = 0; i < leaderboard.numOfRunsInJson() && i < maxRuns; i++) {
+            int numOfPlayersInThisRun = leaderboard.playerlinks().get(i).length;
+            Player[] playersInThisRun = new Player[numOfPlayersInThisRun];
+            for (int j = 0; j < numOfPlayersInThisRun; j++) {
+                String currentPlayerLink = leaderboard.playerlinks().get(i)[j];
+                playersInThisRun[j] = getPlayer(currentPlayerLink);
+            }
+            toReturn.add(playersInThisRun);
+        }
+
+        return toReturn;
+    }
+    public static Player getPlayer(String playerlink) throws IOException {
+        try {
+            if (isCached(playerlink))
+                return (Player) getCachedIdentifiable(playerlink);
+
+            Player newPlayer = JsonReader.createPlayer(fetchJson(playerlink));
+            addToCache(newPlayer);
+            return newPlayer;
+
+        } catch (FileNotFoundException playerNotFound) {
+            return new Guest(null, "<not found>", null);
+        }
     }
 
 
