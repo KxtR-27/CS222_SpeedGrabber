@@ -13,3 +13,4 @@ To launch the JavaFX Application, execute the <kbd>SpeedGrabberApplication.java<
 | Jayway JsonPath  | https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path     |
 | IOUtils          | https://mvnrepository.com/artifact/commons-io/commons-io             |
 | PrettyTime       | https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime |
+| Bootstrap 3 CSS  | https://github.com/dicolar/jbootx?tab=readme-ov-file#bootstrap3      |
