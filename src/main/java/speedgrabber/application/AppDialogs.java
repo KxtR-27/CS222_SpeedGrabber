@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 
 // Class and methods are intentionally package-private
-class AppAlerts {
+class AppDialogs {
     static Alert getGenericError(Exception e) {
         e.printStackTrace(System.err);
 
@@ -49,4 +49,7 @@ class AppAlerts {
             }
         }
     }
+
+
+    // ...
 }

@@ -4,8 +4,8 @@ plugins {
     id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
-group = "com.example"
-version = "1.0-SNAPSHOT"
+group = "speedrungrabber"
+version = "v0.2a"
 
 repositories {
     mavenCentral()

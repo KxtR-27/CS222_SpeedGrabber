@@ -187,7 +187,7 @@ public class ApiDataGrabber {
             return newPlayer;
 
         } catch (FileNotFoundException playerNotFound) {
-            return new Guest(null, "<not found>", null);
+            return new Guest(null, "unfound guest", null);
         }
     }
 

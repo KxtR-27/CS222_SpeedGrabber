@@ -94,13 +94,13 @@ public class SpeedGrabberController {
             leaderboardTable.setDisable(true);
         }
         catch (UnknownHostException e) {
-            AppAlerts.showGenericError(new UnknownHostException("A network error occurred. Please check your internet connection"));
+            AppDialogs.showGenericError(new UnknownHostException("A network error occurred. Please check your internet connection"));
         }
         catch (FileNotFoundException e) {
-            AppAlerts.showSearchError(new FileNotFoundException(encodedSlug));
+            AppDialogs.showSearchError(new FileNotFoundException(encodedSlug));
         }
         catch (Exception e) {
-            AppAlerts.showGenericError(e);
+            AppDialogs.showGenericError(e);
         }
         finally {
             gameSearchField.setText("");
@@ -139,10 +139,10 @@ public class SpeedGrabberController {
             leaderboardTable.setDisable(false);
         }
         catch (IOException e) {
-            AppAlerts.showGenericError(new IOException("Something went wrong while grabbing leaderboard data :("));
+            AppDialogs.showGenericError(new IOException("Something went wrong while grabbing leaderboard data :("));
         }
         catch (Exception e) {
-            AppAlerts.showGenericError(e);
+            AppDialogs.showGenericError(e);
         }
 
         gameSearchField.setDisable(false);
@@ -159,7 +159,7 @@ public class SpeedGrabberController {
             return ApiDataGrabber.getLeaderboard(leaderboardLink, runsSpinner.getValue());
         }
         catch (IOException e) {
-            AppAlerts.showGenericError(new IOException("Something went wrong with the leaderboard. :("));
+            AppDialogs.showGenericError(new IOException("Something went wrong with the leaderboard. :("));
         }
         return null;
     }
