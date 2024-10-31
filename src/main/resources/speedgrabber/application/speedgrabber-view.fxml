@@ -4,85 +4,113 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="500.0" prefWidth="500.0" stylesheets="@styles/bootstrap3.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="speedgrabber.application.SpeedGrabberController">
-      <padding>
-         <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
-      </padding>
-         <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <Label fx:id="gameNameLabel" alignment="CENTER" contentDisplay="CENTER" disable="true" text="No Game Selected">
-         <font>
-            <Font name="System Italic" size="13.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="2.0" />
-         </VBox.margin>
-      </Label>
-      <TextField fx:id="gameSearchField" alignment="TOP_LEFT" onAction="#searchGame" prefHeight="113.0" prefWidth="460.0" promptText="Enter game abbreviation or id..." />
-               <HBox alignment="TOP_CENTER" prefHeight="45.0" prefWidth="460.0" spacing="10.0">
-                   <VBox alignment="TOP_CENTER" spacing="5.0">
-                       <HBox.margin>
-                           <Insets />
-                       </HBox.margin>
-                       <ChoiceBox fx:id="categoryDropdown" disable="true" prefWidth="145.0" />
-                       <Label fx:id="levelIndicator" disable="true" text="*indicates per-level category" visible="false">
-                           <font>
-                               <Font name="System Italic" size="10.0" />
-                           </font>
-                           <VBox.margin>
-                               <Insets top="1.0" />
-                           </VBox.margin>
-                       </Label>
-                   </VBox>
-                   <VBox alignment="TOP_CENTER" spacing="5.0">
-                       <ChoiceBox fx:id="levelDropdown" disable="true" prefWidth="145.0" />
-                       <CheckBox fx:id="levelBox" disable="true" mnemonicParsing="false" onAction="#configureDropdowns" styleClass="xs" text="Show Levels">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="10.0" />
-               </font>
-                       </CheckBox>
-                   </VBox>
-                   <VBox alignment="TOP_CENTER">
-                       <Button fx:id="leaderboardButton" disable="true" mnemonicParsing="false" onAction="#getLeaderboardTableData" prefHeight="26.0" prefWidth="146.0" text="Show Leaderboard" />
-                       <HBox alignment="CENTER_RIGHT">
-                           <Label fx:id="runsLabel" disable="true" text="Runs Per Page:">
-                               <font>
-                                   <Font size="10.0" />
-                               </font>
-                               <HBox.margin>
-                                   <Insets right="-10.0" top="-2.0" />
-                               </HBox.margin>
-                           </Label>
-                           <Spinner fx:id="runsSpinner" disable="true" prefHeight="26.0" prefWidth="76.0" scaleX="0.6" scaleY="0.6">
-                  <HBox.margin>
-                     <Insets top="-2.0" />
-                  </HBox.margin></Spinner>
-                       </HBox>
-                   </VBox>
-                  <padding>
-                     <Insets bottom="5.0" top="10.0" />
-                  </padding>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-               </HBox>
-               <AnchorPane prefHeight="445.0" prefWidth="460.0">
-                   <TableView fx:id="leaderboardTable" disable="true" fixedCellSize="0.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                       <columns>
-                           <TableColumn fx:id="placeColumn" prefWidth="43.39999580383301" text="#" />
-                           <TableColumn fx:id="playerColumn" prefWidth="114.99999237060547" text="Player" />
-                           <TableColumn fx:id="timeColumn" prefWidth="136.0" text="Time" />
-                           <TableColumn fx:id="dateColumn" prefWidth="163.0" text="Date" />
-                       </columns>
-                   </TableView>
-               </AnchorPane>
-             <HBox prefHeight="100.0" prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets top="5.0" />
-                 </VBox.margin>
-                 <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearAllFields" prefHeight="0.0" prefWidth="79.0" styleClass="xs" text="Clear All" />
-             </HBox>
-         </VBox>
-   </AnchorPane>
+<?import java.lang.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="500.0" prefWidth="500.0"
+            stylesheets="@styles/bootstrap3.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            fx:controller="speedgrabber.application.SpeedGrabberController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
+    </padding>
+    <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label fx:id="gameNameLabel" alignment="CENTER" contentDisplay="CENTER" disable="true" text="No Game Selected">
+            <font>
+                <Font name="System Italic" size="13.0"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="2.0"/>
+            </VBox.margin>
+        </Label>
+        <HBox>
+            <TextField fx:id="gameSearchField" alignment="TOP_LEFT" onAction="#searchGame" prefHeight="113.0"
+                       prefWidth="460.0" promptText="Enter game abbreviation or id..." styleClass="first"/>
+            <Button mnemonicParsing="false" onAction="#searchGame" prefHeight="31.0" prefWidth="136.0"
+                    text="Search">
+                <styleClass>
+                    <String fx:value="sm"/>
+                    <String fx:value="info"/>
+                    <String fx:value="last"/>
+                </styleClass>
+            </Button>
+        </HBox>
+        <HBox alignment="TOP_CENTER" prefHeight="45.0" prefWidth="460.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" spacing="5.0">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <ChoiceBox fx:id="categoryDropdown" disable="true" prefWidth="145.0"/>
+                <Label fx:id="levelIndicator" disable="true" text="*indicates per-level category" visible="false">
+                    <font>
+                        <Font name="System Italic" size="10.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets top="1.0"/>
+                    </VBox.margin>
+                </Label>
+            </VBox>
+            <VBox alignment="TOP_CENTER" spacing="5.0">
+                <ChoiceBox fx:id="levelDropdown" disable="true" prefWidth="145.0" styleClass="middle"/>
+                <CheckBox fx:id="levelBox" disable="true" mnemonicParsing="false" onAction="#configureDropdowns"
+                          styleClass="xs" text="Show Levels">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </CheckBox>
+            </VBox>
+            <VBox alignment="TOP_CENTER">
+                <Button fx:id="leaderboardButton" disable="true" mnemonicParsing="false"
+                        onAction="#getLeaderboardTableData" prefHeight="26.0" prefWidth="146.0" text="Show Leaderboard">
+                    <styleClass>
+                        <String fx:value="success"/>
+                        <String fx:value="sm"/>
+                    </styleClass>
+                </Button>
+                <HBox alignment="CENTER_RIGHT">
+                    <Label fx:id="runsLabel" disable="true" text="Runs Per Page:">
+                        <font>
+                            <Font size="10.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets right="-10.0"/>
+                        </HBox.margin>
+                    </Label>
+                    <Spinner fx:id="runsSpinner" disable="true" prefHeight="26.0" prefWidth="76.0" scaleX="0.6"
+                             scaleY="0.6">
+                        <HBox.margin>
+                            <Insets top="-2.0"/>
+                        </HBox.margin>
+                    </Spinner>
+                </HBox>
+            </VBox>
+            <padding>
+                <Insets bottom="5.0" top="10.0"/>
+            </padding>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+        </HBox>
+        <AnchorPane prefHeight="445.0" prefWidth="460.0">
+            <TableView fx:id="leaderboardTable" disable="true" fixedCellSize="0.0" prefHeight="200.0" prefWidth="200.0"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+                <columns>
+                    <TableColumn fx:id="placeColumn" prefWidth="43.39999580383301" text="#"/>
+                    <TableColumn fx:id="playerColumn" prefWidth="114.99999237060547" text="Player"/>
+                    <TableColumn fx:id="timeColumn" prefWidth="136.0" text="Time"/>
+                    <TableColumn fx:id="dateColumn" prefWidth="163.0" text="Date"/>
+                </columns>
+            </TableView>
+        </AnchorPane>
+        <HBox spacing="5.0">
+            <VBox.margin>
+                <Insets top="5.0"/>
+            </VBox.margin>
+            <Button mnemonicParsing="false" prefWidth="80.0" styleClass="xs" text="Sort/Filters"/>
+            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearAllFields" prefHeight="0.0"
+                    prefWidth="80.0" styleClass="xs" text="Clear All"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
