@@ -8,10 +8,15 @@ import speedgrabber.records.interfaces.Player;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+// TODO: For sorting, get paginated runs [2]
+// TODO: Uploading Splits with runs.
 public class ApiDataGrabber {
     private static final List<Identifiable> CACHED_IDENTIFIABLES = new ArrayList<>();
     private static final boolean ENABLE_CACHE_LOG = false;
@@ -163,18 +168,12 @@ public class ApiDataGrabber {
         return newRun;
     }
 
-    public static List<Player[]> getPlayersInRuns(Leaderboard leaderboard, int maxRuns) throws IOException {
-        List<Player[]> toReturn = new ArrayList<>();
+    public static Player[] getPlayersInRun(Run run) throws IOException {
+        int numOfPlayers = run.playerlinks().size();
+        Player[] toReturn = new Player[numOfPlayers];
 
-        for (int i = 0; i < leaderboard.numOfRunsInJson() && i < maxRuns; i++) {
-            int numOfPlayersInThisRun = leaderboard.playerlinks().get(i).length;
-            Player[] playersInThisRun = new Player[numOfPlayersInThisRun];
-            for (int j = 0; j < numOfPlayersInThisRun; j++) {
-                String currentPlayerLink = leaderboard.playerlinks().get(i)[j];
-                playersInThisRun[j] = getPlayer(currentPlayerLink);
-            }
-            toReturn.add(playersInThisRun);
-        }
+        for (int i = 0; i < numOfPlayers; i++)
+            toReturn[i] = ApiDataGrabber.getPlayer(run.playerlinks().get(i));
 
         return toReturn;
     }

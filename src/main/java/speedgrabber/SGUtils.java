@@ -1,10 +1,18 @@
 package speedgrabber;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class SGUtils {
+    public static final PrettyTime prettyTime = new PrettyTime();
+
+
     public static LocalDateTime asLocalDateTime(String iso8601) {
         if (iso8601 != null)
             return LocalDateTime.parse(iso8601.substring(0, 19));
@@ -62,12 +70,22 @@ public class SGUtils {
         return LocalTime.of(hours, minutes, (int) seconds, milliseconds * 1000000);
     }
 
+    public static String asDateAgo(LocalDate then) {
+        return (then == null) ? "..." : prettyTime.format(then);
+    }
+
+    public static void openLink(URI uri) throws IOException {
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().browse(uri);
+        }
+    }
 
     public static String grabEndOfSplit(String toSplit, String splitter) {
         return toSplit.split(splitter)[toSplit.split(splitter).length - 1];
     }
-
     public static String encodeSlug(String slug) {
         return slug.replace(' ', '+');
     }
+
+
 }

@@ -12,6 +12,8 @@ public class SpeedGrabberApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SpeedGrabberApplication.class.getResource("speedgrabber-view.fxml"));
 
+
+
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Speed Grabber v0.1a");
         stage.setScene(scene);
