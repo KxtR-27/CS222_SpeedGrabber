@@ -1,10 +1,9 @@
-package speedgrabber;
+package speedgrabber.records.interfaces;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import speedgrabber.records.Guest;
 import speedgrabber.records.User;
-import speedgrabber.records.interfaces.Player;
 
 public class PlayerTest {
     @Test

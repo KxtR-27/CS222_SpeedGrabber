@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class SGUtils {
-    public static final PrettyTime prettyTime = new PrettyTime();
-
+    private static final PrettyTime prettyTime = new PrettyTime();
 
     public static LocalDateTime asLocalDateTime(String iso8601) {
         if (iso8601 != null)
@@ -19,14 +18,12 @@ public class SGUtils {
 
         return null;
     }
-
     public static LocalDate asLocalDate(String iso8601) {
         if (iso8601 != null)
             return LocalDate.parse(iso8601);
 
         return null;
     }
-
     public static LocalTime asLocalTime(String primaryTime) {
         int hours = 0; int minutes = 0; float seconds = 0; int milliseconds;
         int indexH, indexM, indexS;
@@ -69,15 +66,8 @@ public class SGUtils {
 
         return LocalTime.of(hours, minutes, (int) seconds, milliseconds * 1000000);
     }
-
     public static String asDateAgo(LocalDate then) {
         return (then == null) ? "..." : prettyTime.format(then);
-    }
-
-    public static void openLink(URI uri) throws IOException {
-        if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().browse(uri);
-        }
     }
 
     public static String grabEndOfSplit(String toSplit, String splitter) {
@@ -87,5 +77,9 @@ public class SGUtils {
         return slug.replace(' ', '+');
     }
 
-
+    public static void openLink(URI uri) throws IOException {
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().browse(uri);
+        }
+    }
 }

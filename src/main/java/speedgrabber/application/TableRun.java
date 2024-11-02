@@ -21,10 +21,11 @@ public class TableRun {
         dateProperty().set(SGUtils.asDateAgo(run.dateOfRun()));
     }
 
+    // Not Yet Implemented
+    @SuppressWarnings("unused")
     public Run getRun() {
         return run;
     }
-    // Not Yet Implemented
     @SuppressWarnings("unused")
     public Player[] getPlayers() {
         return players;

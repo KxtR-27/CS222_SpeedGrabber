@@ -1,6 +1,7 @@
 package speedgrabber;
 
 import org.apache.commons.io.IOUtils;
+import speedgrabber.jsonreaders.*;
 import speedgrabber.records.*;
 import speedgrabber.records.interfaces.Identifiable;
 import speedgrabber.records.interfaces.Player;
@@ -84,7 +85,7 @@ public class ApiDataGrabber {
             return (Game) getCachedIdentifiable(gameTitle);
 
         try {
-            Game newGame = JsonReader.createGame(
+            Game newGame = GameReader.create(
                     fetchJson(gameLink),
                     fetchJson(gameLink + "/categories"),
                     fetchJson(gameLink + "/levels")
@@ -107,7 +108,7 @@ public class ApiDataGrabber {
         if (isCached(levellink))
             return (Level) getCachedIdentifiable(levellink);
 
-        Level newLevel = JsonReader.createLevel(fetchJson(levellink));
+        Level newLevel = LevelReader.create(fetchJson(levellink));
         addToCache(newLevel);
         return newLevel;
     }
@@ -123,25 +124,18 @@ public class ApiDataGrabber {
         if (isCached(categorylink))
             return (Category) getCachedIdentifiable(categorylink);
 
-        Category newCategory = JsonReader.createCategory(fetchJson(categorylink));
+        Category newCategory = CategoryReader.create(fetchJson(categorylink));
         addToCache(newCategory);
         return newCategory;
     }
 
     public static Leaderboard getLeaderboard(String leaderboardlink, int maxRuns) throws IOException {
-        Leaderboard toReturn;
+        if (isCached(leaderboardlink))
+            return (Leaderboard) getCachedIdentifiable(leaderboardlink);
 
-        if (isCached(leaderboardlink)) {
-            toReturn = (Leaderboard) getCachedIdentifiable(leaderboardlink);
-            if (toReturn != null && toReturn.runlinks().size() < maxRuns)
-                JsonReader.populateLeaderboard(toReturn, maxRuns, fetchJson(leaderboardlink));
-        }
-        else {
-            toReturn = JsonReader.createLeaderboard(fetchJson(leaderboardlink), maxRuns);
-            addToCache(toReturn);
-        }
-
-        return toReturn;
+        Leaderboard newLeaderboard = LeaderboardReader.create(fetchJson(leaderboardlink), maxRuns);
+        addToCache(newLeaderboard);
+        return newLeaderboard;
     }
 
     public static List<Run> getListOfRuns(Leaderboard leaderboard, int maxRuns) throws IOException {
@@ -154,8 +148,6 @@ public class ApiDataGrabber {
                     leaderboard.runplaces().get(i)
             ));
         }
-        if (i < maxRuns - 1)
-            JsonReader.populateLeaderboard(leaderboard, maxRuns, leaderboard.identify());
 
         return toReturn;
     }
@@ -163,7 +155,7 @@ public class ApiDataGrabber {
         if (isCached(runLink))
             return (Run) getCachedIdentifiable(runLink);
 
-        Run newRun = JsonReader.createRun(fetchJson(runLink), place);
+        Run newRun = RunReader.create(fetchJson(runLink), place);
         addToCache(newRun);
         return newRun;
     }
@@ -182,7 +174,7 @@ public class ApiDataGrabber {
             if (isCached(playerlink))
                 return (Player) getCachedIdentifiable(playerlink);
 
-            Player newPlayer = JsonReader.createPlayer(fetchJson(playerlink));
+            Player newPlayer = PlayerReader.create(fetchJson(playerlink));
             addToCache(newPlayer);
             return newPlayer;
 
