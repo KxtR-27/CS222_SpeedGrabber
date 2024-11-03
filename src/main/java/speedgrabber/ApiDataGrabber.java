@@ -59,9 +59,21 @@ public class ApiDataGrabber {
         CACHED_IDENTIFIABLES.add(identifiable);
         printCacheLog(String.format("[+] Added to cache Identifiable (%s) with Identity [\"%s\"]%n", identifiable.getClass().getSimpleName(), identifiable.identify()));
     }
+    private static void replaceInCache(Identifiable identifiable) {
+        for (int i = 0; i < CACHED_IDENTIFIABLES.size(); i++) {
+            if (identifiable.identify().equals(CACHED_IDENTIFIABLES.get(i).identify())) {
+                CACHED_IDENTIFIABLES.set(i, identifiable);
+                printCacheLog("[>] Identifiable with identity '" + identifiable.identify() + "' was replaced in cache.");
+                return;
+            }
+        }
+
+        printCacheLog("[?] Tried to replace identifiable with identity '" + identifiable.identify() + "' but none was found.");
+    }
     private static void printCacheLog(String message) {
         if (ENABLE_CACHE_LOG) System.out.println(message);
     }
+
 
     private static String fetchJson(String url) throws IOException {
         URL dataUrl = URI.create(url).toURL();
@@ -130,11 +142,23 @@ public class ApiDataGrabber {
     }
 
     public static Leaderboard getLeaderboard(String leaderboardlink, int maxRuns) throws IOException {
-        if (isCached(leaderboardlink))
-            return (Leaderboard) getCachedIdentifiable(leaderboardlink);
+        boolean leaderboardIsTotallyNew = true;
+
+        if (isCached(leaderboardlink)) {
+            Leaderboard leaderboard = (Leaderboard) getCachedIdentifiable(leaderboardlink);
+            leaderboardIsTotallyNew = false;
+
+            assert leaderboard != null;
+            if (!LeaderboardReader.isMaxRunsOutOfBounds(leaderboard, maxRuns))
+                return leaderboard;
+        }
 
         Leaderboard newLeaderboard = LeaderboardReader.create(fetchJson(leaderboardlink), maxRuns);
-        addToCache(newLeaderboard);
+        if ((leaderboardIsTotallyNew))
+            addToCache(newLeaderboard);
+        else
+            replaceInCache(newLeaderboard);
+
         return newLeaderboard;
     }
 
@@ -184,13 +208,16 @@ public class ApiDataGrabber {
     }
 
 
-    static void test_addToCache(Identifiable identifiable) {
-        addToCache(identifiable);
+    static Identifiable test_getCachedIdentifiable(String identity) {
+        return getCachedIdentifiable(identity);
     }
     static boolean test_isCached(String identity) {
         return isCached(identity);
     }
-    static Identifiable test_getCachedIdentifiable(String identity) {
-        return getCachedIdentifiable(identity);
+    static void test_addToCache(Identifiable identifiable) {
+        addToCache(identifiable);
+    }
+    static void test_replaceInCache(Identifiable identifiable) {
+        replaceInCache(identifiable);
     }
 }

@@ -32,7 +32,6 @@ public class LeaderboardReader extends JsonReader {
         setRunLists();
         setLeaderboard();
     }
-
     private static void setParameters() {
         parameters.clear();
 
@@ -47,7 +46,6 @@ public class LeaderboardReader extends JsonReader {
 
         parameters.put("timing", (String) definiteScan("data.timing"));
     }
-
     private static void setRunLists() {
         runlinks.clear(); runplaces.clear(); runPlayerlinks.clear();
 
@@ -70,7 +68,6 @@ public class LeaderboardReader extends JsonReader {
 
         return toReturn;
     }
-
     private static void setLeaderboard() {
         leaderboard = new Leaderboard(
                 parameters.get("weblink"),
@@ -83,5 +80,9 @@ public class LeaderboardReader extends JsonReader {
                 numOfRunsInJson,
                 runlinks, runplaces, runPlayerlinks
         );
+    }
+
+    public static boolean isMaxRunsOutOfBounds(Leaderboard leaderboard, int maxRuns) {
+        return (leaderboard.runlinks().size() < maxRuns);
     }
 }

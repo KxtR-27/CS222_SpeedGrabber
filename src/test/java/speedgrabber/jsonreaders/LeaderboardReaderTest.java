@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 // Tests can be messy. For each test, I purposefully intend to write out the lists.
@@ -86,5 +87,17 @@ public class LeaderboardReaderTest {
         Leaderboard actualLeaderboard = LeaderboardReader.create(leaderboardPerLevelJson, 3);
 
         Assertions.assertEquals(expectedLeaderboard, actualLeaderboard);
+    }
+
+    @Test
+    public void test_isMaxRunsOutOfBounds() {
+        Leaderboard leaderboard = new Leaderboard(
+                null, null, null, null, null, 90,
+                new ArrayList<>(List.of("a", "b", "c", "d", "e")),
+                null, null
+        );
+
+        Assertions.assertTrue(LeaderboardReader.isMaxRunsOutOfBounds(leaderboard, 6));
+        Assertions.assertFalse(LeaderboardReader.isMaxRunsOutOfBounds(leaderboard, 3));
     }
 }

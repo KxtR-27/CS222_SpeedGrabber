@@ -65,4 +65,23 @@ public class ApiDataGrabberTest {
         Assertions.assertEquals(user, cachedUser);
         Assertions.assertEquals(guest, cachedGuest);
     }
+
+    @Test
+    public void test_replaceInCache() {
+        Identifiable oldIdentifiable = new Guest("self", "oldName", "oldRuns");
+        ApiDataGrabber.test_addToCache(oldIdentifiable);
+        Assertions.assertTrue(ApiDataGrabber.test_isCached("self"));
+        Assertions.assertEquals(
+                "oldName",
+                ((Guest) (ApiDataGrabber.test_getCachedIdentifiable(oldIdentifiable.identify()))).name()
+        );
+
+        Identifiable newIdentifiable = new Guest("self", "newName", "newRuns");
+        ApiDataGrabber.test_replaceInCache(newIdentifiable);
+        Assertions.assertTrue(ApiDataGrabber.test_isCached("self"));
+        Assertions.assertEquals(
+                "newName",
+                ((Guest) (ApiDataGrabber.test_getCachedIdentifiable(oldIdentifiable.identify()))).name()
+        );
+    }
 }
