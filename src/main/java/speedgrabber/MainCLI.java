@@ -1,5 +1,9 @@
 package speedgrabber;
 
+import speedgrabber.apidatagrabbers.CategoryGrabber;
+import speedgrabber.apidatagrabbers.GameGrabber;
+import speedgrabber.apidatagrabbers.LeaderboardGrabber;
+import speedgrabber.apidatagrabbers.RunGrabber;
 import speedgrabber.records.Category;
 import speedgrabber.records.Game;
 import speedgrabber.records.Leaderboard;
@@ -20,10 +24,10 @@ public class MainCLI {
 
         try {
             System.out.printf("%nSearching... ");
-            Game game = ApiDataGrabber.getGame(gameNameInput);
+            Game game = GameGrabber.grab(gameNameInput);
             System.out.printf("Game Found! [%s]%n%n", game.name());
 
-            List<Category> categoryList = ApiDataGrabber.getListOfCategories(game);
+            List<Category> categoryList = CategoryGrabber.grabList(game);
             System.out.printf("Enter # for desired Category.%n%s%n", "-".repeat(20));
             for (int i = 1; i <= categoryList.size(); i++)
                 System.out.printf("* %-3s %s%n", String.format("%d.", i), categoryList.get(i-1));
@@ -32,8 +36,8 @@ public class MainCLI {
             System.out.print(">> ");
             int categoryIndex = Integer.parseInt(consoleScanner.nextLine()) - 1;
 
-            Leaderboard leaderboard = ApiDataGrabber.getLeaderboard(categoryList.get(categoryIndex).leaderboardlink(), 20);
-            List<Run> leaderboardRuns = ApiDataGrabber.getListOfRuns(leaderboard, 20);
+            Leaderboard leaderboard = LeaderboardGrabber.grab(categoryList.get(categoryIndex).leaderboardlink(), 20);
+            List<Run> leaderboardRuns = RunGrabber.grabList(leaderboard, 20);
 
             System.out.printf("%nLeaderboard for: %s%n%s%n", categoryList.get(categoryIndex).name(), "-".repeat(20));
             for (Run run : leaderboardRuns)

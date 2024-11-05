@@ -1,12 +1,30 @@
-package speedgrabber;
+package speedgrabber.records.interfaces;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import speedgrabber.records.Guest;
 import speedgrabber.records.User;
-import speedgrabber.records.interfaces.Player;
 
 public class PlayerTest {
+    @Test
+    public void test_identify() {
+        Player myPlayer = new Player() {
+            final String playername = "name";
+            final String playerlink = "link";
+
+            @Override
+            public String playername() {
+                return playername;
+            }
+
+            @Override
+            public String playerlink() {
+                return playerlink;
+            }
+        };
+        Assertions.assertEquals("link", myPlayer.identify());
+    }
+
     @Test
     public void test_playername_guest() {
         Player player = new Guest(

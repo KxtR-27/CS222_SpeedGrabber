@@ -4,12 +4,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import speedgrabber.SGUtils;
 
 import java.io.IOException;
 import java.net.URI;
 
 // Class and methods are intentionally package-private
-class AppAlerts {
+class AppDialogs {
     static Alert getGenericError(Exception e) {
         e.printStackTrace(System.err);
 
@@ -39,7 +40,7 @@ class AppAlerts {
 
         if (searchAlert.getResult().equals(buttonTypes.get(1))) {
             try {
-                AppUtils.openLink(URI.create(String.format(
+                SGUtils.openLink(URI.create(String.format(
                         "https://www.speedrun.com/search?q=%s",
                         e.getMessage()
                 )));
@@ -48,4 +49,7 @@ class AppAlerts {
             }
         }
     }
+
+
+    // ...
 }

@@ -1,0 +1,29 @@
+{
+    "keyString": "valueString",
+    "keyInteger": 1,
+    "keyDouble": 2.5,
+    "keyBoolean": true,
+
+    "keyObject": {
+        "favorite food": "hotdog",
+        "favorite snack": "more hotdog"
+    },
+
+    "keyArray": [
+        "item 1",
+        2,
+        3.5,
+        true
+    ],
+
+    "keyRandomStuff": {
+        "myArray": [
+            3, 4, 5, 6, 7
+        ],
+        "myObject": {
+            "value": 3,
+            "value1": 4
+        },
+        "favorite food": "ice cream"
+    }
+}

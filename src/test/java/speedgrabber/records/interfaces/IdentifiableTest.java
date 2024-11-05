@@ -1,9 +1,8 @@
-package speedgrabber;
+package speedgrabber.records.interfaces;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import speedgrabber.records.*;
-import speedgrabber.records.interfaces.Identifiable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

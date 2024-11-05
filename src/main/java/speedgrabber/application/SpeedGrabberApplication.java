@@ -13,7 +13,7 @@ public class SpeedGrabberApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(SpeedGrabberApplication.class.getResource("speedgrabber-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Speed Grabber v0.1a");
+        stage.setTitle("Speed Grabber v0.2a");
         stage.setScene(scene);
         stage.show();
     }

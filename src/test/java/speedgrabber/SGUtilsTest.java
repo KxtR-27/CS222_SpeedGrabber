@@ -2,6 +2,7 @@ package speedgrabber;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -51,7 +52,6 @@ public class SGUtilsTest {
 
         Assertions.assertEquals(expectedTime, actualTime);
     }
-
 
     @Test
     public void test_asLocalTime_WholeSeconds() {
