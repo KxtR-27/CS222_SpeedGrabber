@@ -8,8 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import speedgrabber.ApiDataGrabber;
 import speedgrabber.SGUtils;
+import speedgrabber.apidatagrabbers.*;
 import speedgrabber.records.*;
 
 import java.io.FileNotFoundException;
@@ -71,15 +71,15 @@ public class SpeedGrabberController {
         try {
             gameSearchField.setDisable(true);
 
-            activeGame = ApiDataGrabber.getGame(encodedSlug);
+            activeGame = GameGrabber.grab(encodedSlug);
             gameNameLabel.setText(activeGame.name());
             gameNameLabel.setFont(Font.font("System", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 13));
             gameNameLabel.setDisable(false);
 
-            activeCategories = ApiDataGrabber.getListOfCategories(activeGame);
+            activeCategories = CategoryGrabber.grabList(activeGame);
             categoryDropdown.setDisable(false);
 
-            activeLevels = ApiDataGrabber.getListOfLevels(activeGame);
+            activeLevels = LevelGrabber.grabList(activeGame);
             levelDropdown.getItems().setAll(activeLevels);
             if (!activeLevels.isEmpty()) levelDropdown.setValue(levelDropdown.getItems().getFirst());
             levelBox.setDisable(false);
@@ -131,10 +131,10 @@ public class SpeedGrabberController {
             if (leaderboard == null)
                 return;
 
-            List<Run> runs = ApiDataGrabber.getListOfRuns(getLeaderboardWithContext(), runsSpinner.getValue());
+            List<Run> runs = RunGrabber.grabList(getLeaderboardWithContext(), runsSpinner.getValue());
             leaderboardTable.getItems().clear();
             for (Run run : runs)
-                tableRuns.add(new TableRun(run, ApiDataGrabber.getPlayersInRun(run)));
+                tableRuns.add(new TableRun(run, PlayerGrabber.grabArrayFromRun(run)));
             leaderboardTable.setItems(FXCollections.observableList(tableRuns));
             leaderboardTable.setDisable(false);
         }
@@ -156,7 +156,7 @@ public class SpeedGrabberController {
                 );
 
         try {
-            return ApiDataGrabber.getLeaderboard(leaderboardLink, runsSpinner.getValue());
+            return LeaderboardGrabber.grab(leaderboardLink, runsSpinner.getValue());
         }
         catch (IOException e) {
             AppDialogs.showGenericError(new IOException("Something went wrong with the leaderboard. :("));

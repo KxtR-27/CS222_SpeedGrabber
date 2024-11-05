@@ -1,4 +1,4 @@
-package speedgrabber;
+package speedgrabber.apidatagrabbers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,12 +9,13 @@ import speedgrabber.records.interfaces.Identifiable;
 import speedgrabber.records.interfaces.Player;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ApiDataGrabberTest {
 
     @Test
-    public void test_test_isCached() {
-        ApiDataGrabber.test_addToCache(new Game(
+    public void test_isCached() {
+        ApiDataGrabber.addToCache(new Game(
                 "weblink",
                 "selflink",
                 "id",
@@ -25,8 +26,8 @@ public class ApiDataGrabberTest {
                 new ArrayList<>()
         ));
 
-        Assertions.assertTrue(ApiDataGrabber.test_isCached("id+abbreviation"));
-        Assertions.assertFalse(ApiDataGrabber.test_isCached("otherid+otherabbreviation"));
+        Assertions.assertTrue(ApiDataGrabber.isCached("id+abbreviation"));
+        Assertions.assertFalse(ApiDataGrabber.isCached("otherid+otherabbreviation"));
     }
 
     @Test
@@ -41,26 +42,26 @@ public class ApiDataGrabberTest {
                 new ArrayList<>(),
                 new ArrayList<>()
         );
-        ApiDataGrabber.test_addToCache(expectedIdentifiable);
-        Identifiable actualIdentifiable = ApiDataGrabber.test_getCachedIdentifiable("id");
+        ApiDataGrabber.addToCache(expectedIdentifiable);
+        Identifiable actualIdentifiable = ApiDataGrabber.getCachedIdentifiable("id");
 
         Assertions.assertEquals(expectedIdentifiable, actualIdentifiable);
 
-        Assertions.assertNull(ApiDataGrabber.test_getCachedIdentifiable("notAValidIdentity"));
+        Assertions.assertNull(ApiDataGrabber.getCachedIdentifiable("notAValidIdentity"));
     }
 
     @Test
     public void test_getCachedPlayer() {
         User user = new User(null, "userIdentity", null, null, null, null, null);
-        ApiDataGrabber.test_addToCache(user);
-        Assertions.assertTrue(ApiDataGrabber.test_isCached(user.identify()));
+        ApiDataGrabber.addToCache(user);
+        Assertions.assertTrue(ApiDataGrabber.isCached(user.identify()));
 
         Guest guest = new Guest("guestIdentity", null, null);
-        ApiDataGrabber.test_addToCache(guest);
-        Assertions.assertTrue(ApiDataGrabber.test_isCached(guest.identify()));
+        ApiDataGrabber.addToCache(guest);
+        Assertions.assertTrue(ApiDataGrabber.isCached(guest.identify()));
 
-        Player cachedUser = (Player) ApiDataGrabber.test_getCachedIdentifiable(((Player) user).identify());
-        Player cachedGuest = (Player) ApiDataGrabber.test_getCachedIdentifiable(((Player) guest).identify());
+        Player cachedUser = (Player) ApiDataGrabber.getCachedIdentifiable(((Player) user).identify());
+        Player cachedGuest = (Player) ApiDataGrabber.getCachedIdentifiable(((Player) guest).identify());
 
         Assertions.assertEquals(user, cachedUser);
         Assertions.assertEquals(guest, cachedGuest);
@@ -69,19 +70,19 @@ public class ApiDataGrabberTest {
     @Test
     public void test_replaceInCache() {
         Identifiable oldIdentifiable = new Guest("self", "oldName", "oldRuns");
-        ApiDataGrabber.test_addToCache(oldIdentifiable);
-        Assertions.assertTrue(ApiDataGrabber.test_isCached("self"));
+        ApiDataGrabber.addToCache(oldIdentifiable);
+        Assertions.assertTrue(ApiDataGrabber.isCached("self"));
         Assertions.assertEquals(
                 "oldName",
-                ((Guest) (ApiDataGrabber.test_getCachedIdentifiable(oldIdentifiable.identify()))).name()
+                ((Guest) (Objects.requireNonNull(ApiDataGrabber.getCachedIdentifiable(oldIdentifiable.identify())))).name()
         );
 
         Identifiable newIdentifiable = new Guest("self", "newName", "newRuns");
-        ApiDataGrabber.test_replaceInCache(newIdentifiable);
-        Assertions.assertTrue(ApiDataGrabber.test_isCached("self"));
+        ApiDataGrabber.replaceInCache(newIdentifiable);
+        Assertions.assertTrue(ApiDataGrabber.isCached("self"));
         Assertions.assertEquals(
                 "newName",
-                ((Guest) (ApiDataGrabber.test_getCachedIdentifiable(oldIdentifiable.identify()))).name()
+                ((Guest) (Objects.requireNonNull(ApiDataGrabber.getCachedIdentifiable(oldIdentifiable.identify())))).name()
         );
     }
 }
